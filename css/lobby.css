@@ -1,0 +1,325 @@
+.lobby {
+    width: 80%;
+    min-height: 400px;
+
+    margin: 45px auto;
+
+    border-radius: 15px;
+    display: flex;
+
+    position: relative;
+    
+    -webkit-box-shadow: 2px 4px 23px 9px rgba(0,0,0,0.1);
+    -moz-box-shadow: 2px 4px 23px 9px rgba(0,0,0,0.1);
+    box-shadow: 2px 4px 23px 9px rgba(0,0,0,0.1);
+
+}
+
+.lobby__content {
+    width: 100%;
+    padding: 25px 45px;
+}
+
+.lobby--header {
+    margin-top: 10px;
+    margin-bottom: 55px;
+    text-align: center;
+    font-size: 36px;
+    font-family: 'Merriweather';
+    font-weight: 600;
+}
+
+.lobby__content--elements {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.lobby__content--elements .lobby__content--element {
+    margin-bottom: 25px;
+}
+
+.lobby__content--elements .lobby__settings,
+.lobby__content--elements .lobby__players {
+    width: 49%;
+}
+
+.lobby-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.lobby-form .input_wrapper {
+    width: 35%;
+}
+
+.lobby-form .flex__wrapper {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    width: 75%;
+}
+
+.center-btn {
+    display: flex;
+    justify-content: space-around;
+}
+
+li.player {
+    position: relative;
+
+    list-style-type: none;
+    width: 100%;
+    padding: 7.5px 0;
+    border-bottom: 1px solid #f4bfdb;
+    cursor: pointer;
+}
+
+.player .player__admin {
+    position: absolute;
+    top: 7.5px;
+    left: -35px;
+    bottom: auto;
+    right: auto;
+
+    width: 25px;
+    height: 25px;
+
+}
+
+.player .player__kick {
+    width: 17px;
+    height: 17px;
+    position: absolute;
+    top: 7.5px;
+    left: -31px;
+    cursor: pointer;
+}
+
+.player .player--kick {
+    width: 100%;
+    height: 100%;
+}
+
+.player .player__admin .player__admin--img {
+    width: 100%;
+    height: 100%;
+}
+
+.player .player__popup {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    right: auto;
+    bottom: auto;
+
+    width: 250px;
+    height: 150px;
+
+    background-color: white;
+
+    border-radius: 5px;
+
+    -webkit-box-shadow: 2px 4px 23px 9px rgba(0,0,0,0.1);
+    -moz-box-shadow: 2px 4px 23px 9px rgba(0,0,0,0.1);
+    box-shadow: 2px 4px 23px 9px rgba(0,0,0,0.1);
+
+    transform: translateY(-105%);
+
+}
+
+.player .player__popup .player__popup--close {
+    position: absolute;
+    top: 15px;
+    left: auto;
+    right: 15px;
+    bottom: auto;
+    
+    width: 15px;
+    height: 15px;
+
+    cursor: pointer;
+}
+
+.player .player__popup .popup__content {
+   
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+    align-items:center;
+
+}
+
+.player__wrapper {
+    display: flex;
+    justify-content: space-around;
+}
+
+.player .player__wrapper .player-name {
+    width: 65%;
+}
+.player .player__wrapper .player-level,
+.player .player__wrapper .player-country {
+    width: 22.5%;
+}
+
+.lobby__chat {
+    width: 50%;
+    border-radius: 5px;
+    height: 260px;
+}
+
+.lobby__chat .chat {
+    height: 220px;
+    border-bottom: 1px solid #f4bfdb;
+}
+
+.lobby__chat .chat #lobbyChatMessages {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+}
+
+.lobby__chat .chat #lobbyChatMessages .chat__message {
+    list-style: none;
+    margin-left: 2.5px;
+    word-wrap: break-word;
+    margin-bottom: 5px;
+}
+
+.lobby__chat .chat #lobbyChatMessages .chat__message span {
+    font-weight: 600;
+    margin-right: 5px;
+}
+
+.lobby__chat .send-msg {
+    height: 40px;
+}
+
+
+.lobby__chat .send-msg #lobbySend {
+    font-family: 'Source Sans Pro';
+
+    height: 33px;
+    width: 75%;
+
+    padding-left: 10px;
+    padding-right: 10px;
+
+    border-bottom-left-radius: 5px;
+    border: none;
+}
+
+.lobby__chat .send-msg #sendLobbyMessage {
+    width: 25%;
+    height: 38px;
+
+    border: none;
+    background-color: #f4bfdb;
+
+    color: white;
+
+    border-bottom-right-radius: 5px;
+
+    cursor: pointer;
+
+    transition: all .22s ease-out;
+}
+
+.lobby__chat .send-msg #sendLobbyMessage:hover {
+    background-color: #b27092;
+    color: white;
+}
+
+.lobby__chat .send-msg .send-msg-form {
+    display: flex;
+}
+
+.lobby__close {
+    position: absolute;
+    top: 25px;
+    left: auto;
+    right: 25px;
+    bottom: auto;
+    
+    width: 15px;
+    height: 15px;
+
+    cursor: pointer;
+}
+
+.settings--modal {
+    width: 45%;
+    margin: 0 auto;
+    padding: 45px 35px;
+
+    border-radius: 15px;
+
+    background-color: white;
+
+    position: absolute;
+    top: 50vw;
+    left: 50%;
+    transform: translate(-50%, -100%);
+
+    -webkit-box-shadow: 2px 4px 23px 9px rgba(0,0,0,0.1);
+    -moz-box-shadow: 2px 4px 23px 9px rgba(0,0,0,0.1);
+    box-shadow: 2px 4px 23px 9px rgba(0,0,0,0.1);
+}
+
+.settings--modal .settings__close {
+    position: absolute;
+
+    top: 21px;
+    left: auto;
+    right: 25px;
+    bottom: auto;
+
+    width: 15px;
+    height: 15px;
+
+    cursor: pointer;
+}
+
+.lobby__settings--btn {
+    position: absolute;
+
+    top: 21px;
+    left: auto;
+    right: 55px;
+    bottom: auto;
+
+    width: 22px;
+    height: 23px;
+
+    cursor: pointer;
+}
+
+.lobby__settings--btn .settings__btn {
+    width: 100%;
+    height: 100%;
+}
+
+.lobby__close .close__btn,
+.player__popup--close .close__btn,
+.lobby__settings--btn .settings__btn,
+.settings--modal .settings__close .close__btn {
+    width: 100%;
+    height: 100%;
+
+    transition: all .22s ease-out;
+}
+
+.lobby__close:hover .close__btn,
+.player__popup--close:hover .close__btn,
+.lobby__settings--btn:hover .settings__btn,
+.settings--modal .settings__close:hover .close__btn {
+    transform: rotate(180deg);
+}

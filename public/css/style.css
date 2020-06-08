@@ -1,0 +1,24 @@
+#canvas {
+    border: 1px solid black;
+}
+
+.color__wrapper {
+    display: flex;
+}
+
+.canvas__controls {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 15px;
+    width: 550px;
+    margin: 15px auto;
+}
+
+.color {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    margin-right: 5px;
+    
+    cursor: pointer;
+}

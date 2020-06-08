@@ -1,0 +1,360 @@
+.game__wrapper {
+    position: relative;
+    margin-top: 60px;
+    -webkit-box-shadow: 2px 4px 23px 9px rgba(0,0,0,0.1);
+    -moz-box-shadow: 2px 4px 23px 9px rgba(0,0,0,0.1);
+    box-shadow: 2px 4px 23px 9px rgba(0,0,0,0.1);
+    padding: 10px 5px;
+    border-radius: 15px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.game__wrapper .leave__button {
+    position: absolute;
+    top: 20px;
+    left: auto;
+    right: 25px;
+    bottom: auto;
+
+    height: 17px;
+    width: 17px;
+    
+    cursor: pointer;
+    transition: all .22s ease-out;
+}
+
+.game__wrapper .leave__button:hover {
+    transform: rotate(180deg);
+}
+
+.game__wrapper .leave__button .leave__button--icon {
+    width: 17px;
+    height: 17px;
+}
+
+.game__wrapper .gameUI {
+    width: 100%;
+    height: 50px;
+}
+
+.game__wrapper .gameUI .flex__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    width: 50%;
+    margin: 0 auto;
+}
+
+.game__wrapper .gameUI .clock__wrapper {
+    position: relative;
+
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; 
+}
+
+.game__wrapper .gameUI .clock__wrapper .clock--img {
+    width: 45px;
+    height: 45px;
+}
+
+.game__wrapper .gameUI .clock__wrapper .clock--time {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    right: auto;
+    bottom: auto;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.game__wrapper .gameUI .clock__wrapper .clock--time.single-digit {
+    left: 19px;
+}
+
+.game__wrapper .gameUI .word__wrapper {
+    font-weight: 900;
+    text-transform: uppercase;
+    font-size: 28px;
+    letter-spacing: 5px;
+    word-spacing: 10px;
+}
+
+.game__wrapper .gameUI .round__wrapper {
+    display: flex;
+}
+
+.game__wrapper .gameUI .round__wrapper #maxRound,
+.game__wrapper .gameUI .round__wrapper #currentRound {
+    font-weight: 700;
+}
+
+.game__wrapper #gameChat {
+    width: 200px;
+}
+
+.game__wrapper #gameChat .chat {
+    height: 570px;
+    background-color: rgba(244, 191, 219, 0.1);
+}
+
+.game__wrapper #gameChat .chat .game-chat__message {
+    list-style: none;
+    padding: 10px 5px;
+    font-size: 15px;
+    word-wrap: break-word;
+}
+
+.game__wrapper #gameChat .chat .game-chat__message span {
+    margin-right: 2.5px;
+}
+
+.game__wrapper #gameChat .chat #gameChatMessages {
+    overflow-y: scroll;
+    height: 100%;
+    max-height: 570px;
+    /* overflow-x: hidden; */
+}
+
+.game__wrapper #gameChat #gameSend {
+    width: 197px;
+    padding: 10px 0;
+    border: none;
+    padding-left: 5px;
+}
+
+
+
+#canvas {
+    position: relative;
+    z-index: 1;
+    border: 1px solid black;
+    width: 100%;
+}
+
+.canvas__wrapper {
+    position: relative;
+}
+
+.color__wrapper {
+    display: flex;
+}
+
+.canvas__controls {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    
+    margin-bottom: 15px;
+    margin: 0 auto;
+    padding: 10px 15px;
+
+    width: 550px;
+
+    border-radius: 5px;
+
+    /* -webkit-box-shadow: 2px 4px 23px 9px rgba(0,0,0,0.1);
+    -moz-box-shadow: 2px 4px 23px 9px rgba(0,0,0,0.1);
+    box-shadow: 2px 4px 23px 9px rgba(0,0,0,0.1) */
+}
+
+.canvas__controls #clear .clear--icon {
+    width: 70px;
+    height: 70px;
+    cursor: pointer;
+}
+
+.color {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    margin-right: 5px;
+    
+    cursor: pointer;
+}
+
+#canvasWrapper .choosing__word--overlay,
+#canvasWrapper .player-choosing--overlay,
+#canvasWrapper .score--overlay,
+#canvasWrapper .game--end {
+    position: absolute;
+
+    height: 100%;
+    width: 100%;
+
+    z-index: 5;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+#canvasWrapper .game--end {
+    flex-direction: column;
+}
+
+#canvasWrapper .game--end h2 {
+    color: white;
+    font-weight: 900;
+    font-size: 36px;
+    margin-bottom: 35px;
+}
+
+#canvasWrapper .choosing__word--overlay .choosing__word--content {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#canvasWrapper .choosing__word--overlay .choosing__word--content .word {
+    margin: 0 15px;
+    padding: 10px 15px;
+
+    border-radius: 5px;
+
+    font-size: 25px;
+    font-weight: 900;
+    text-transform: uppercase;
+
+    background-color: white;
+
+    cursor: pointer;
+
+    border: 1px solid transparent;
+
+    transition: all .22s ease-out;
+}
+
+
+#canvasWrapper .choosing__word--overlay .choosing__word--content .word:hover {
+    border: 1px solid #b27092;
+}
+
+
+#canvasWrapper .player-choosing--overlay .player-choosing__message {
+    font-size: 24px;
+    font-weight: 700;
+    color: white;
+}
+
+/*
+
+    Player list
+
+*/
+
+.players__list {
+    width: 80%;
+    margin: 30px auto;
+}
+
+.players__list .players {
+    display: flex;
+    justify-content: space-around;
+}
+
+.players__list .players .game__player .player__info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.players__list .players .game__player {
+    padding: 5px 10px;
+    margin: 10px 15px;
+    border-radius: 5px;
+}
+
+
+
+
+/* 
+
+    Player list
+
+*/
+
+
+.players-list {
+    display: flex;
+    flex-direction: column;
+
+    width: 15%;
+}
+
+.players-list-player {
+    position: relative;
+
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    padding: 7.5px 0px;
+    border-bottom: 3px solid #f4bfdb;
+
+    transition: all .22s ease-out;
+
+}
+
+.players-list .players-list-player.success {
+    border-bottom: 3px solid #87baab;
+}
+
+.players-list-player .player--info {
+    margin-left: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    margin: 0 auto;
+}
+
+/* 
+
+    Scoreboard
+
+*/
+
+
+.score__overlay--board {
+    width: 45%;
+}
+
+.score__overlay--board .score-player {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+
+    padding: 10px 0px;
+    margin-bottom: 5px;
+
+    border-radius: 5px;
+    
+    background-color: white;
+}
+
+.score__overlay--board .score-player .name,
+.score__overlay--board .score-player .score {
+    font-size: 18px;
+}
+
+.score__overlay--board .score-player .score {
+    display: flex;
+    align-items: center;
+}
+
+.score__overlay--board .score-player .score-change {
+    color: #87baab;
+    font-weight: 700;
+    font-size: 21px;
+    margin-left: 5px;
+}

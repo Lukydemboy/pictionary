@@ -1,0 +1,58 @@
+body {
+  background-image: url("../assets/img/login.jpg");
+  background-position: center;
+  width: 100vw;
+  height: 100vh; }
+
+.login__wrapper {
+  width: 100vw;
+  height: 100vh; }
+  .login__wrapper .center {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center; }
+    .login__wrapper .center .login {
+      background-color: white;
+      border-radius: 5px;
+      padding: 50px 50px;
+      display: flex;
+      -webkit-box-shadow: 2px 4px 23px 9px rgba(0, 0, 0, 0.1);
+      -moz-box-shadow: 2px 4px 23px 9px rgba(0, 0, 0, 0.1);
+      box-shadow: 2px 4px 23px 9px rgba(0, 0, 0, 0.1); }
+    .login__wrapper .center .login__input {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px; }
+      .login__wrapper .center .login__input label {
+        margin-bottom: 5px;
+        color: rgba(0, 0, 0, 0.6);
+        font-family: 'Source Sans Pro';
+        font-weight: 700; }
+      .login__wrapper .center .login__input input {
+        width: 100%;
+        padding: 5px 0;
+        border: none;
+        border-bottom: 1px solid #f4bfdb;
+        font-size: 13px; }
+      .login__wrapper .center .login__input input:focus {
+        border-bottom: 1px solid #b27092; }
+      .login__wrapper .center .login__input ::placeholder {
+        color: rgba(0, 0, 0, 0.6); }
+    .login__wrapper .center .button__wrapper {
+      display: flex;
+      align-items: center; }
+      .login__wrapper .center .button__wrapper .login__btn {
+        border: none;
+        background-color: transparent;
+        font-size: 14px;
+        color: #b27092;
+        padding: 0;
+        margin-right: 7.5px;
+        cursor: pointer;
+        transition: all .22s ease-out; }
+        .login__wrapper .center .button__wrapper .login__btn:hover {
+          margin-right: 10px; }
+      .login__wrapper .center .button__wrapper .button--img {
+        width: 20px; }
