@@ -4,6 +4,86 @@ body {
   width: 100vw;
   height: 100vh; }
 
+
+  .guest-modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    border-radius: 5px;
+    background-color: white;
+    -webkit-box-shadow: 2px 4px 23px 9px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 2px 4px 23px 9px rgba(0, 0, 0, 0.1);
+    box-shadow: 2px 4px 23px 9px rgba(0, 0, 0, 0.1);
+    transform: translate(-50%, -50%);
+    z-index: 20; }
+    .guest-modal--content {
+      position: relative;
+      padding: 45px 55px; }
+    .guest-modal--header {
+      color: #b27092;
+      font-size: 24px;
+      font-weight: 700;
+      font-family: 'Merriweather';
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 30px; }
+    .guest-modal__form {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-bottom: 45px; }
+      .guest-modal__form label {
+        color: #b27092;
+        margin-bottom: 5px; }
+      .guest-modal__form--input {
+        width: 100%;
+        padding: 5px 0;
+        border: none;
+        border-bottom: 1px solid #f4bfdb;
+        font-size: 13px;
+        margin-bottom: 2.5px;
+        transition: border .22s ease-out; }
+        .guest-modal__form--input:focus {
+          border-bottom: 1px solid #b27092; }
+        .guest-modal__form--input.error {
+          border-bottom: 1px solid red; }
+      .guest-modal__form--message  {
+        font-family: 'Source Sans Pro';
+        color: red;
+        font-size: 13px;
+        margin-bottom: 15px;
+      }
+
+      .guest-modal__form .button__wrapper {
+        display: flex;
+        align-items: center; }
+        .guest-modal__form .button__wrapper--btn {
+          border: none;
+          background-color: transparent;
+          font-size: 14px;
+          color: #b27092;
+          padding: 0;
+          margin-right: 7.5px;
+          cursor: pointer;
+          transition: all .22s ease-out; }
+          .guest-modal__form .button__wrapper--btn:hover {
+            margin-right: 10px; }
+        .guest-modal__form .button__wrapper .button--img {
+          width: 20px; }
+    .guest-modal--span {
+      display: block;
+      width: 100%;
+      color: #b27092;
+      font-size: 13px;
+      text-align: center;
+      margin-top: 30px;
+      margin-bottom: -30px;
+      cursor: pointer; }
+  
+
+
 .login__wrapper {
   width: 100vw;
   height: 100vh; }

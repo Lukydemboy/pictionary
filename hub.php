@@ -3,13 +3,18 @@
 session_start();
 
 if (!isset($_SESSION['username'])) {
-    $guest = true;
-} else {
-    $guest = false;
+    if(isset($_GET['action']) && $_GET['action'] === 'joinRoom') {
+        header('location:index.php?act=joinRoom');
+        exit();
+    } else if ($_GET['action'] === 'joiningRoom') {
+        $_SESSION['username'] = $_GET['username'];
+        $_SESSION['level'] = 1;
+        $_SESSION['country'] = 'Belgium';
+    } else {
+        header('location:index.php?msg=notLoggedIn');
+        exit();
+    }
 }
-
-
-
 ?>
 
 <!DOCTYPE html>
@@ -31,20 +36,6 @@ if (!isset($_SESSION['username'])) {
         include_once 'includes/nav.php';
     ?>
 
-    <div id="guestUserModal" class="guest-modal hide">
-        <div class="guest-modal--content">
-            <h2 class="guest-modal--header">Play as guest!</h2>
-            <form class="guest-modal__form">
-                <label for="username">Username</label>
-                <input name="username" id="guestUsername" type="text" class="guest-modal__form--input" placeholder="Username">
-                <div class="button__wrapper">
-                    <input class="button__wrapper--btn" type="submit" name="guestSubmitButton" value="Play as guest">
-                    <img src="assets/img/right-arrow.svg" alt="->" class="button--img">    
-                </div>
-            </form>
-            <span class="guest-modal--span">Or make an account</span>
-        </div>
-    </div>
     <div class="container">
         <div id="gameBrowse" class="game-browse">
             <div class="side-img image__wrapper">
@@ -331,16 +322,9 @@ if (!isset($_SESSION['username'])) {
     <script src="http://<?php echo $host ?>:3000/socket.io/socket.io.js"></script>
     <!-- <script src="admin/js/clientSocket.js"></script> -->
 
-    
+
     <script>
-
-        const userIsGuest = '<?php echo $guest ?>';
-
-        // if (userIsGuest === 'true') {
-
-        //     return;            
-        // }
-
+       
         const user = {
             username: '<?php echo $_SESSION['username'] ?>',
             level: <?php echo $_SESSION['level']?>,
@@ -348,6 +332,8 @@ if (!isset($_SESSION['username'])) {
             joinedRoom: false,
             currentRoom: ''
         }
+        
+        
         
         const socket = io.connect(':3000', { query: `username=${user.username}`});
 
@@ -370,10 +356,7 @@ if (!isset($_SESSION['username'])) {
 
     </script>
     <script src="admin/js/canvas.js"></script>
-    <script>
-        
 
-    </script>
     <!-- Lobby scripts -->
     <script src="admin/helpers/room.js"></script>
     <script src="admin/actions/createRoom.js"></script>
