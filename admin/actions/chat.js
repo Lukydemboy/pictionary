@@ -8,7 +8,6 @@ const lobbyChatForm = document.getElementById('lobbyChatForm');
 lobbyChatForm.addEventListener('submit', e => {
     e.preventDefault();
 
-    console.log(lobbyChatInput);
     const message = lobbyChatInput.value;
 
     if (message === '') return;

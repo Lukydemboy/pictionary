@@ -1,3 +1,13 @@
+<?php
+session_start();
+
+if (isset($_GET['msg'])) {
+    if ($_GET['msg'] == 'guestLeft') {
+        session_destroy();
+    }
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -64,7 +74,7 @@
             }
         }
 
-        if ($_GET['action'] == 'joinRoom') {
+        if ($_GET['act'] == 'joinRoom') {
             const guestModalDOM = document.getElementById('guestUserModal');
             const loginModalDOM = document.getElementById('loginModal');
         
@@ -90,7 +100,7 @@
             xhr.onreadystatechange = function () {
                 if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
                     const usernameStatus = xhr.response;
-
+                    
                     if (usernameStatus === 'taken') {
                         guestUserModalFormUsername.classList.add('error');
                         guestUserModalFormMessage.innerHTML = 'Username is already taken!'

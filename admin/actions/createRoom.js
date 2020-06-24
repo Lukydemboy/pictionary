@@ -1,6 +1,8 @@
 const createRoomDOM = document.getElementById('createRoom');
 const createRoomBtn = document.getElementById('createRoomBtn');
+
 const lobbyDOM = document.getElementById('lobby');
+const copyURLDOM = document.getElementById('copyUrlBtn');
 
 const lobbySettingsDOM = document.getElementById('lobbySettings');
 const roomType = document.getElementById('private-room');
@@ -40,6 +42,10 @@ createRoomBtn.addEventListener('click', e => {
 socket.on('room created', room => {
 
     sessionStorage.setItem('currentRoom', room.name);
+
+    // Make and add lobby URL to copyButton
+    inviteURL = window.location.href.split('?')[0];
+    copyURLDOM.dataset.url = `${inviteURL}?action=joinRoom&room=${room.name}`;
 
     // Insert Lobby Settings
     insertLobbySettings(room);

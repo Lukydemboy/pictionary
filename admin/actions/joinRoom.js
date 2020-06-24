@@ -7,8 +7,6 @@ const lobbyRoundsDOM = document.getElementById('lobbySettingsRounds');
 const lobbyTimeDOM = document.getElementById('lobbySettingsDrawTime');
 const lobbyTypeDOM = document.getElementById('lobbySettingsType');
 
-
-
 // Create table with all rooms
 socket.on('get rooms', allRooms => {
     roomListDOM.innerHTML = '';
@@ -96,6 +94,10 @@ socket.on('room full', () => {
 
 // When room is joined
 socket.on('joined room', joinedRoom => {
+    // Make and add lobby URL to copyButton
+    inviteURL = window.location.href.split('?')[0];
+    copyURLDOM.dataset.url = `${inviteURL}?action=joinRoom&room=${joinedRoom.name}`;
+
     user.joinedRoom = true;
     // Set user room to joinedRoom object
     user.currentRoom = joinedRoom;
@@ -107,7 +109,7 @@ socket.on('joined room', joinedRoom => {
 socket.on('joined playingroom', joinedRoom => {
     user.playingRoom = joinedRoom;
 
-    console.log('Joining playingroom....');
+    console.log('Joining playingroom...');
     gameBrowse.classList.add('hide');
     gameWrapper.classList.remove('hide');
 
@@ -253,7 +255,6 @@ socket.on('player joined', (changedRoom, joinedUser) => {
         currentPlayer.addEventListener('click', popupProfile);
     }
 
-
     // Close Player popup
     const popupClose = document.getElementsByClassName('player__popup--close');
 
@@ -275,6 +276,10 @@ socket.on('player joined', (changedRoom, joinedUser) => {
         kickPlayerBtn.addEventListener('click', kickPlayer);
     }
 
+});
+
+socket.on('room not found', () => {
+    notificate('warning', `The room you were trying to join doesn't exist`)
 });
 
 function hideHostElements() {
@@ -305,18 +310,18 @@ function popupProfile(event) {
     popupDOM.classList.remove('hide');
 
     // Get player info from DB 
-    const xhr = new XMLHttpRequest();
+    // const xhr = new XMLHttpRequest();
 
-    xhr.open('POST', 'admin/php/getPlayer.php', true);
+    // xhr.open('POST', 'admin/php/getPlayer.php', true);
 
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xhr.onreadystatechange = function () { // Call a function when the state changes.
-        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-            console.log(JSON.parse(xhr.response));
-        }
-    }
+    // xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    // xhr.onreadystatechange = function () { // Call a function when the state changes.
+    //     if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+    //         console.log(JSON.parse(xhr.response));
+    //     }
+    // }
 
-    xhr.send(`playerName=${playerName}`);
+    // xhr.send(`playerName=${playerName}`);
 
 
 }

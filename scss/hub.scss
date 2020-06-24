@@ -285,6 +285,50 @@ body {
 .lobby {
     position: relative;
 
+    .copy-url {
+        position: absolute;
+
+        top: 30px;
+        left: -41px;
+
+        padding: 5px;
+
+        background-color: white;
+
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+
+        border-bottom: 1px solid $light-color-light;
+        border-left: 1px solid $light-color-light;
+        border-top: 1px solid $light-color-light;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        cursor: pointer;
+
+        transition: all .22s ease-out;
+
+        &:hover {
+            border-bottom: 1px solid $light-color-dark;
+            border-left: 1px solid $light-color-dark;
+            border-top: 1px solid $light-color-dark;
+        }
+
+        &--img {
+            width: 30px;
+            height: 30px;
+
+            transition: all .22s ease-out;
+
+            &:hover {
+                transform: scale(1.2);
+            }
+
+        }
+    }
+
     .start-game__btn {
         position: absolute;
         top: auto;

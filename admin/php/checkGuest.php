@@ -7,9 +7,11 @@ if (!isset($_POST['playerName'])) {
 }
 
 $username = $_POST['playerName'];
+$level = 1;
+$country = 'Belgium';
 $usernameStatus;
 
-$STH = $DBH -> prepare('SELECT * FROM Users WHERE Username = :username');
+$STH = $DBH -> prepare('SELECT * FROM Users, guestUsers WHERE Users.Username = :username OR guestUsers.Username');
 
 $STH -> bindParam(':username', $username);
 
@@ -23,6 +25,14 @@ if ($found > 0) {
     $usernameStatus = 'taken';
 } else {
     $usernameStatus = 'open';
+
+    $STHADD = $DBH -> prepare('INSERT INTO guestUsers (Username, Level, Country) VALUES (:username, :level, :country)');
+
+    $STHADD -> bindParam(':username', $username);
+    $STHADD -> bindParam(':level', $level);
+    $STHADD -> bindParam(':country', $country);
+
+    $STHADD -> execute();
 }
 
 echo $usernameStatus;

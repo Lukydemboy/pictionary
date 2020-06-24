@@ -28,6 +28,7 @@ if ($found > 0) {
         $_SESSION['token']      = 'LDP19980317';
         $_SESSION['country']    = $country;
         $_SESSION['level']      = $level;
+        $_SESSION['userType']   = 'registered';
         
         header('location:hub.php');
     } else {

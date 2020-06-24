@@ -2,19 +2,37 @@
 
 session_start();
 
+if (isset($_SESSION['guestLeft'])) {
+    if ($_SESSION['guestLeft'] === 'true') {
+        header('location:admin/php/guestLeft.php');
+        exit();
+    }
+}
+
 if (!isset($_SESSION['username'])) {
-    if(isset($_GET['action']) && $_GET['action'] === 'joinRoom') {
+    if(isset($_GET['action']) && $_GET['action'] === 'joinRoom' && isset($_GET['room'])) {
+        $_SESSION['roomToJoin'] = $_GET['room'];
         header('location:index.php?act=joinRoom');
         exit();
     } else if ($_GET['action'] === 'joiningRoom') {
-        $_SESSION['username'] = $_GET['username'];
-        $_SESSION['level'] = 1;
-        $_SESSION['country'] = 'Belgium';
+        $_SESSION['username']   = $_GET['username'];
+        $_SESSION['level']      = 1;
+        $_SESSION['country']    = 'Belgium';
+        $_SESSION['userType']   = 'guest';
+
+        if (isset($_GET['room'])) {
+            $_SESSION['roomToJoin'] = $_GET['room'];
+        }
+
     } else {
         header('location:index.php?msg=notLoggedIn');
         exit();
     }
+} else {
+
+    $_SESSION['roomToJoin'] = '';
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -137,6 +155,9 @@ if (!isset($_SESSION['username'])) {
                 <img src="assets/img/settings.svg" alt="Settings" class="settings__btn">
             </div>
             <div class="lobby__content">
+                <div id="copyUrlBtn" class="copy-url">
+                    <img src="assets/img/copy.svg" alt="Copy URL" class="copy-url--img">
+                </div>
                 <h2 class="lobby--header">Lobby</h2>
                 <div class="lobby__content--elements">
                     <div id="lobbyPlayers" class="lobby__content--element lobby__players">
@@ -314,26 +335,28 @@ if (!isset($_SESSION['username'])) {
     <script src="admin/js/handleFormElements.js"></script>
 
 
-
     <?php
         $actual_link = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']; 
         $host = explode(':', $actual_link)[1];
     ?>
     <script src="http://<?php echo $host ?>:3000/socket.io/socket.io.js"></script>
-    <!-- <script src="admin/js/clientSocket.js"></script> -->
-
 
     <script>
        
+        if (sessionStorage.getItem('guestLeft') === 'true') { 
+            sessionStorage.removeItem('guestLeft');
+            window.location.href = 'index.php?msg=guestLeft';
+        }
+
         const user = {
             username: '<?php echo $_SESSION['username'] ?>',
             level: <?php echo $_SESSION['level']?>,
             country: '<?php echo $_SESSION['country']?>',
+            userType: '<?php echo $_SESSION['userType']?>',
+            roomToJoin: `<?php echo $_SESSION['roomToJoin']?>`,
             joinedRoom: false,
             currentRoom: ''
-        }
-        
-        
+        }        
         
         const socket = io.connect(':3000', { query: `username=${user.username}`});
 
@@ -341,7 +364,6 @@ if (!isset($_SESSION['username'])) {
             user.socketId = socket.id;
         });
         
-
         let roundTimer;
         let wordPickingTimeOut;
         let audio = new Audio();
@@ -352,7 +374,6 @@ if (!isset($_SESSION['username'])) {
                 socket.emit('leave room', user.currentRoom.name, user);
             }
         });
-        
 
     </script>
     <script src="admin/js/canvas.js"></script>
@@ -366,13 +387,12 @@ if (!isset($_SESSION['username'])) {
     <script src="admin/actions/kickPlayer.js"></script>
     <script src="admin/actions/startGame.js"></script>
     <script src="admin/actions/chat.js"></script>
+    <script src="admin/actions/guestJoinRoom.js"></script>
+    <script src="admin/actions/invite.js"></script>
 
     <!-- Game -->
     <script src="admin/actions/gameChat.js"></script>
     <script src="admin/actions/game.js"></script>
-
-
-    
 
     <script>
         document.addEventListener('DOMContentLoaded', e => {
@@ -382,6 +402,28 @@ if (!isset($_SESSION['username'])) {
                     return 'Are you sure you want to leave the game?';
                 }
             }
+
+            window.addEventListener('unload', e => {
+                if (user.userType === 'guest') {
+                    // Make URL
+                    let baseURL = location.href.split("/")
+                    baseURL.pop();
+                    baseURL = baseURL.join("/")
+
+                    const url =  baseURL + "/admin/php/deleteGuest.php"
+                    const data = `username=${user.username}`;
+
+                    // Delete guest out of DB
+                    let status = navigator.sendBeacon(url, data);
+
+                    sessionStorage.setItem('guestLeft', 'true');
+
+                    console.log(status);
+                    console.log('User deleted out of DB');
+
+                }
+
+            });
         });
     </script>
     

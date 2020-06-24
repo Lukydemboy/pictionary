@@ -60,7 +60,6 @@ io.on("connection", function(socket) {
         delete roomObjects[room];
       }
 
-
     }
 
     // Delete user out of connected users
@@ -112,8 +111,16 @@ io.on("connection", function(socket) {
   socket.on('join room', (room, user) => {
     console.log(`${user.username} joining ${room}...`);
 
-    // Add users to players (per room) als de user nog niet in de room zit
+    if(!room) return;
+
+    if (!roomObjects[room]) {
+      socket.emit('room not found', room);
+      return;
+    };
+
+    // Check if user already joined the room
     if (roomObjects[room].playerNames.includes(user.username)) {
+      console.log(roomObjects[room]);
       socket.emit('already joined');
       return;
     }
