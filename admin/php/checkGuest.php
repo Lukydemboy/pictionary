@@ -11,7 +11,7 @@ $level = 1;
 $country = 'Belgium';
 $usernameStatus;
 
-$STH = $DBH -> prepare('SELECT * FROM Users, guestUsers WHERE Users.Username = :username OR guestUsers.Username');
+$STH = $DBH -> prepare('SELECT * FROM Users, guestUsers WHERE Users.Username = :username OR guestUsers.Username = :username');
 
 $STH -> bindParam(':username', $username);
 
