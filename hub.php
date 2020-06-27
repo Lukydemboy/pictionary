@@ -54,6 +54,19 @@ if (!isset($_SESSION['username'])) {
         include_once 'includes/nav.php';
     ?>
 
+    <!-- FRIENDS LIST -->
+
+    <div id="friendsList" class="friends-list">
+        <div class="friends-list-header">
+            <h2 class="friend-list-title">Friends List</h2>
+        </div>
+        <div id="friendListBody" class="friends-list-body">
+            
+        </div>
+    </div>
+
+    <!-- Hub Container -->
+
     <div class="container">
         <div id="gameBrowse" class="game-browse">
             <div class="side-img image__wrapper">
@@ -349,6 +362,7 @@ if (!isset($_SESSION['username'])) {
         }
 
         const user = {
+            userID: '<?php echo $_SESSION['userID'] ?>',
             username: '<?php echo $_SESSION['username'] ?>',
             level: <?php echo $_SESSION['level']?>,
             country: '<?php echo $_SESSION['country']?>',
@@ -377,6 +391,11 @@ if (!isset($_SESSION['username'])) {
 
     </script>
     <script src="admin/js/canvas.js"></script>
+
+    <!-- Nav scripts -->
+    <script src="admin/js/notifications.js"></script>    
+    <script src="admin/js/friendsList.js"></script>
+
 
     <!-- Lobby scripts -->
     <script src="admin/helpers/room.js"></script>
@@ -417,10 +436,6 @@ if (!isset($_SESSION['username'])) {
                     let status = navigator.sendBeacon(url, data);
 
                     sessionStorage.setItem('guestLeft', 'true');
-
-                    console.log(status);
-                    console.log('User deleted out of DB');
-
                 }
 
             });

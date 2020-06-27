@@ -129,8 +129,6 @@ socket.on('someone joined playingroom', room => {
     // Update playerList
     createPlayerList();
 
-    console.log('Pushing room to all players in room');
-    console.log(user.playingRoom);
 });
 
 // Room JS
@@ -179,7 +177,7 @@ socket.on('player joined', (changedRoom, joinedUser) => {
             playerLI.dataset.host = 'true';
         }
 
-        // POP UP
+        // PLAYER POP UP
         const playerPopup = document.createElement('div');
         playerPopup.classList.add('player__popup');
         playerPopup.classList.add('hide');
@@ -190,19 +188,29 @@ socket.on('player joined', (changedRoom, joinedUser) => {
         closeImage.classList.add('close__btn');
         closeImage.src = 'assets/img/closebutton.svg';
 
-        popupContent = `
-                                <div class="popup__content">
-                                    <div class="popup__username">
-                                        ${player.username}
-                                    </div>
-                                    <div class="popup__level">
-                                        ${player.level}
-                                    </div>
-                                    <div class="popup__country">
-                                        ${player.country}
-                                    </div>
+        popupActionBar = `
+                            <div class="popup__action-bar">
+                                <div data-username="${player.username}" data-userid="${player.userID}" class="action add-friend">
+                                    <img src="assets/img/add-friend.svg" alt="Add Friend">
                                 </div>
-                               `;
+                            </div>
+                         `
+
+        popupContent = `
+                            <div class="popup__content">
+                                <div class="popup__username">
+                                    ${player.username}
+                                </div>
+                                <div class="popup__level">
+                                    ${player.level}
+                                </div>
+                                <div class="popup__country">
+                                    ${player.country}
+                                </div>
+                            </div>
+                        `;
+
+        playerPopup.insertAdjacentHTML('beforeend', popupActionBar);
 
         playerPopupClose.appendChild(closeImage);
         playerPopup.appendChild(playerPopupClose);
@@ -276,6 +284,15 @@ socket.on('player joined', (changedRoom, joinedUser) => {
         kickPlayerBtn.addEventListener('click', kickPlayer);
     }
 
+    // Add friend
+    const addFriendDOM = document.getElementsByClassName('add-friend');
+
+    for (let i = 0; i < addFriendDOM.length; i++) {
+        const addFriendBtn = addFriendDOM[i];
+
+        addFriendBtn.addEventListener('click', addFriend);
+    }
+
 });
 
 socket.on('room not found', () => {
@@ -309,21 +326,6 @@ function popupProfile(event) {
 
     popupDOM.classList.remove('hide');
 
-    // Get player info from DB 
-    // const xhr = new XMLHttpRequest();
-
-    // xhr.open('POST', 'admin/php/getPlayer.php', true);
-
-    // xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    // xhr.onreadystatechange = function () { // Call a function when the state changes.
-    //     if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-    //         console.log(JSON.parse(xhr.response));
-    //     }
-    // }
-
-    // xhr.send(`playerName=${playerName}`);
-
-
 }
 
 function closePopups() {
@@ -336,3 +338,35 @@ function closePopups() {
         currentPopup.classList.add('hide');
     }
 }
+
+// Add friend to friendlist
+function addFriend(e) {
+    const source = e.target.closest('.action');
+
+    const friendUserID = source.dataset.userid;
+    const username = source.dataset.username;
+
+    if (friendUserID == user.userID) return;
+
+    const xhr = new XMLHttpRequest();
+
+    const body = `friendUserID=${friendUserID}&username=${username}&act=add`;
+
+    xhr.open('POST', 'admin/php/friends.php', true);
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+    xhr.send(body);
+
+    xhr.onload = () => {
+        if (xhr.status == 200) {
+            const data = xhr.response;
+            
+            if (data === 'success') {
+                socket.emit('friend request sent', username);
+                notificate('success', 'Friend request is sent!');
+            }
+        }
+    };    
+
+}
+

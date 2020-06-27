@@ -69,6 +69,44 @@ body {
     margin-bottom: -30px;
     cursor: pointer; }
 
+.friends-list {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  top: 59px;
+  right: 0;
+  left: auto;
+  bottom: auto;
+  width: 200px;
+  height: calc(100% - 60px);
+  -webkit-box-shadow: 2px 4px 23px 9px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 2px 4px 23px 9px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 4px 23px 9px rgba(0, 0, 0, 0.1);
+  transition: all .22s ease-out; }
+  .friends-list.hide {
+    transform: translateX(100%); }
+  .friends-list .friends-list-header {
+    padding: 10px 0; }
+    .friends-list .friends-list-header .friend-list-title {
+      text-align: center;
+      font-family: 'Merriweather'; }
+  .friends-list .friend {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 20px 10px;
+    cursor: pointer;
+    transition: all .22s ease-out; }
+    .friends-list .friend:hover {
+      background-color: rgba(0, 0, 0, 0.1); }
+    .friends-list .friend-avatar {
+      width: 100%; }
+    .friends-list .friend-name {
+      font-family: 'Source Sans Pro'; }
+    .friends-list .friend-online--icon {
+      width: 10px;
+      height: 10px; }
+
 .game-browse {
   width: 80%;
   min-height: 400px;

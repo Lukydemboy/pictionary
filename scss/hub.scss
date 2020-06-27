@@ -1,10 +1,13 @@
 $light-color-light: #f4bfdb;
 $light-color-dark: #b27092;
+$light-color-alt: #87baab;
 
 
 body {
     font-family: 'Source Sans Pro';
 }
+
+
 
 .guest-modal {
     position: absolute;
@@ -122,6 +125,75 @@ body {
     }
 
 }
+
+// Friends List
+.friends-list {
+    position: absolute;
+
+    display: flex;
+    flex-direction: column;
+
+    top: 59px;
+    right: 0;
+    left: auto;
+    bottom: auto;
+
+    width: 200px;
+    height: calc(100% - 60px);
+
+    -webkit-box-shadow: 2px 4px 23px 9px rgba(0,0,0,0.1);
+    -moz-box-shadow: 2px 4px 23px 9px rgba(0,0,0,0.1);
+    box-shadow: 2px 4px 23px 9px rgba(0,0,0,0.1);
+
+    transition: all .22s ease-out;
+
+    &.hide {
+        transform: translateX(100%);
+    }
+
+    .friends-list-header {
+        padding: 10px 0;
+        
+        .friend-list-title {
+            text-align: center;
+            font-family: 'Merriweather';
+        }
+    }
+
+    .friend {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+
+        padding: 20px 10px;
+
+        cursor: pointer;
+
+        transition: all .22s ease-out;
+
+        &:hover {
+            background-color: rgba(0,0,0,0.1);
+        }
+
+        &-avatar {
+            width: 100%;
+        }
+
+        &-name {
+            font-family: 'Source Sans Pro';
+        }
+
+        &-online {
+            &--icon {
+                width: 10px;
+                height: 10px;
+            }
+        }
+
+    }
+
+}
+
 
 .game-browse {
     width: 80%;

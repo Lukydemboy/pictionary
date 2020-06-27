@@ -21,9 +21,11 @@ if ($found > 0) {
         $password   = $row -> Password;
         $country    = $row -> Country;
         $level      = $row -> Level;
+        $userID     = $row -> UserID;
     }
 
     if (password_verify($_POST['password'], $password)) {
+        $_SESSION['userID']     = $userID;
         $_SESSION['username']   = $username;
         $_SESSION['token']      = 'LDP19980317';
         $_SESSION['country']    = $country;

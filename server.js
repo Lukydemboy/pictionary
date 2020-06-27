@@ -155,9 +155,7 @@ io.on("connection", function(socket) {
       
     }
 
-
     io.in(roomObjects[room].name).emit('player joined', roomObjects[room], user);
-
 
     console.log(`${user.username} has joined ${room}`);
     
@@ -251,6 +249,17 @@ io.on("connection", function(socket) {
       socket.emit('error', 'Could not leave the room');
     }
 
+  });
+
+  // Friend request sent
+  socket.on('friend request sent', username => {
+    socket.broadcast.emit('friend request received', username);
+  });
+
+  // Friend request accepted
+  socket.on('friend request accepted', () => {
+    console.log('Friend request is accepted');
+    socket.broadcast.emit('friend request accepted');
   });
 
   // Someone is drawing on the canvas
