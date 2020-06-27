@@ -423,21 +423,22 @@ if (!isset($_SESSION['username'])) {
             }
 
             window.addEventListener('unload', e => {
+
+                // Make URL
+                let baseURL = location.href.split("/")
+                baseURL.pop();
+                baseURL = baseURL.join("/")
+
+                const url =  baseURL + "/admin/php/offline.php"
+                const data = `username=${user.username}`;
+
+                // Delete guest out of DB
+                let status = navigator.sendBeacon(url, data);
+
                 if (user.userType === 'guest') {
-                    // Make URL
-                    let baseURL = location.href.split("/")
-                    baseURL.pop();
-                    baseURL = baseURL.join("/")
-
-                    const url =  baseURL + "/admin/php/deleteGuest.php"
-                    const data = `username=${user.username}`;
-
-                    // Delete guest out of DB
-                    let status = navigator.sendBeacon(url, data);
-
                     sessionStorage.setItem('guestLeft', 'true');
                 }
-
+                
             });
         });
     </script>

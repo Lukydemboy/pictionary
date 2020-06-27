@@ -17,6 +17,8 @@ app.get("/", function(req, res) {
 
 io.on("connection", function(socket) {
 
+  io.emit('user has come online');
+
   connectedUsers[socket.id] = { socketId: socket.id, username: socket.handshake.query.username };
 
   socket.emit('connected');
@@ -68,6 +70,7 @@ io.on("connection", function(socket) {
 
     console.log('User is disconnecting');
     socket.emit('user disconnected');
+    io.emit('user has gone offline');
   });
 
   // Create room

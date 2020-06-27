@@ -38,3 +38,13 @@ if ($found > 0) {
     }
 
 }
+
+
+// Set user online state to online
+$onlineState = 1;
+
+$STHUPD = $DBH -> prepare('UPDATE Users SET OnlineState = :onlineState WHERE Username = :username');
+$STHUPD -> bindParam(':username', $_POST['username']);
+$STHUPD -> bindParam(':onlineState', $onlineState);
+
+$STHUPD -> execute();

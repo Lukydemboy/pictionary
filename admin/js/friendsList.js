@@ -6,13 +6,20 @@ document.addEventListener('DOMContentLoaded', e => {
     getFriendsList(friendsListDOM);
     
     socket.on('friend request accepted', () => {
-        getFriendsList(friendsListDOM)
+        getFriendsList(friendsListDOM);
+    });
+
+    socket.on('user has come online', () => {
+        getFriendsList(friendsListDOM);
+    });
+
+    socket.on('user has gone offline', () => {
+        getFriendsList(friendsListDOM);
     });
 
 });
 
 function getFriendsList(node) {
-    console.log('Fetching friends...');
     // Get friends from DB
     const xhr = new XMLHttpRequest();
 
@@ -31,10 +38,16 @@ function getFriendsList(node) {
 
             node.innerHTML = '';
 
+            const friendsArr = [];
             for (let i = 0; i < friends.length; i++) {
                 const friend = friends[i];
 
-                createFriendsList(friend, node);
+                if (!friendsArr.includes(friend.username)) {
+                    createFriendsList(friend, node);
+                }
+
+                friendsArr.push(friend.username);
+
             }
 
         }
@@ -56,9 +69,9 @@ function createFriendsList(friend, node) {
 
     const online = document.createElement('div');
     online.classList.add('friend-online');
-    
+
     const onlineIcon = document.createElement('img');
-    onlineIcon.src = "assets/img/offline.svg";
+    onlineIcon.src = `assets/img/${friend.onlineState == 1 ? 'online' : 'offline'}.svg`;
     onlineIcon.alt = "Offline";
     onlineIcon.classList.add('friend-online--icon');
 
