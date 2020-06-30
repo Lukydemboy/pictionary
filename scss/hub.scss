@@ -7,8 +7,6 @@ body {
     font-family: 'Source Sans Pro';
 }
 
-
-
 .guest-modal {
     position: absolute;
 
@@ -132,6 +130,8 @@ body {
 
     display: flex;
     flex-direction: column;
+
+    background-color: white;
 
     top: 59px;
     right: 0;

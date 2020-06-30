@@ -73,6 +73,7 @@ body {
   position: absolute;
   display: flex;
   flex-direction: column;
+  background-color: white;
   top: 59px;
   right: 0;
   left: auto;

@@ -1,0 +1,116 @@
+.create-avatar-container {
+  box-sizing: border-box;
+  padding: 25px 5px;
+  display: flex;
+  justify-content: center;
+  width: 270px;
+  height: 400px;
+  background-color: rgba(0, 0, 0, 0.5); }
+
+.character {
+  position: relative;
+  display: flex;
+  flex-direction: column; }
+  .character .hair {
+    position: absolute;
+    top: -5px;
+    left: -2px;
+    background-color: black;
+    width: 140px;
+    height: 100px;
+    border-top-left-radius: 50%;
+    border-top-right-radius: 50%;
+    z-index: -1; }
+  .character .head {
+    z-index: 3;
+    position: relative;
+    width: 135px;
+    height: 140px;
+    border-radius: 50%;
+    background-color: navajowhite;
+    overflow: hidden; }
+    .character .head .front-hair {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background-color: black;
+      width: 120px;
+      height: 20px;
+      margin-left: 50%;
+      transform: translateX(-50%); }
+    .character .head .eyes {
+      margin-top: 40px;
+      display: flex;
+      justify-content: space-around; }
+      .character .head .eyes .eye {
+        width: 15px;
+        height: 20px;
+        border-radius: 5px;
+        background-color: black; }
+    .character .head .nose {
+      margin-top: 15px;
+      margin-left: 50%;
+      transform: translateX(-50%);
+      width: 16px;
+      height: 5px;
+      border-radius: 50%;
+      border-bottom: 2px solid #666; }
+    .character .head .mouth {
+      margin-top: 25px;
+      margin-left: 50%;
+      transform: translateX(-50%);
+      width: 35px;
+      border-radius: 5px;
+      height: 3px;
+      background-color: black; }
+  .character .body {
+    z-index: 2;
+    width: 100px;
+    height: 125px;
+    background-color: white;
+    margin-top: -25px;
+    margin-left: 50%;
+    transform: translateX(-50%); }
+    .character .body .shoulders {
+      width: 150%;
+      display: flex;
+      justify-content: space-between;
+      margin-left: 50%;
+      transform: translateX(-50%); }
+      .character .body .shoulders .shoulder {
+        width: 25px;
+        height: 50px;
+        background-color: black; }
+        .character .body .shoulders .shoulder-left {
+          border-top-left-radius: 5px; }
+        .character .body .shoulders .shoulder-right {
+          border-top-right-radius: 5px; }
+        .character .body .shoulders .shoulder .arm {
+          margin-top: 200%;
+          margin-left: 50%;
+          transform: translateX(-50%);
+          width: 10px;
+          height: 50px;
+          background-color: navajowhite; }
+  .character .legs {
+    display: flex;
+    justify-content: space-between;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    width: 50%; }
+    .character .legs .leg {
+      width: 25px;
+      height: 50px;
+      background-color: black; }
+  .character .shoes {
+    display: flex;
+    justify-content: space-between;
+    width: 55%;
+    margin-left: 50%;
+    transform: translateX(-50%); }
+    .character .shoes .shoe {
+      background-color: white;
+      width: 30px;
+      height: 8px;
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px; }

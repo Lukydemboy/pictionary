@@ -47,7 +47,7 @@ if (!isset($_SESSION['username'])) {
     <link rel="stylesheet" href="css/canvas.css">
     <link href="https://fonts.googleapis.com/css?family=Merriweather|Source+Sans+Pro:300,400,600,700,900&display=swap" rel="stylesheet">
     <script src="admin/js/nav.js"></script>
-    <title>Pictionary Shit</title>
+    <title>Pictionary</title>
 </head>
 <body>
     <?php

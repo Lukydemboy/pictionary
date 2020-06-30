@@ -1,0 +1,219 @@
+.create-avatar-container {
+    box-sizing: border-box;
+    padding: 25px 5px;
+    display: flex;
+    justify-content: center;
+
+    width: 270px;
+    height: 400px;
+
+    background-color: rgba(0, 0, 0, .5);
+}
+
+.character {
+
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+
+    .hair {
+        position: absolute;
+        
+        top: -5px;
+        left: -2px;
+
+        background-color: black;
+
+        width: 140px;
+        height: 100px;
+
+        border-top-left-radius: 50%;
+        border-top-right-radius: 50%;
+
+        z-index: -1;
+    }
+
+    .head {
+        z-index: 3;
+        position: relative;
+
+        width: 135px;
+        height: 140px;
+
+        border-radius: 50%;
+
+        background-color: navajowhite;
+
+        overflow: hidden;
+
+        .front-hair {
+            position: absolute;
+            top: 0;
+            left: 0;
+
+            background-color: black;
+
+            width: 120px;
+            height: 20px;
+
+            margin-left: 50%;
+
+            transform: translateX(-50%);
+        }
+
+        .eyes {
+            margin-top: 40px;
+
+            display: flex;
+            justify-content: space-around;
+
+            .eye {
+                width: 15px;
+                height: 20px;
+
+                border-radius: 5px;
+
+                background-color: black;
+            }
+
+            &-left {
+                
+            }
+
+            &-right {
+
+            }
+        }
+
+        .nose {
+            margin-top: 15px;
+            margin-left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 5px;
+            border-radius: 50%;
+            border-bottom: 2px solid #666;
+        }
+
+        .mouth {
+            margin-top: 25px;
+            margin-left: 50%;
+            transform: translateX(-50%);
+            width: 35px;
+            border-radius: 5px;
+            height: 3px;
+            background-color: black;
+        }
+
+    }
+
+    .body {
+        z-index: 2;
+        width: 100px;
+        height: 125px;
+
+        background-color: white;
+
+        margin-top: -25px;
+        margin-left: 50%;
+
+        transform: translateX(-50%);
+
+        .shoulders {
+            width: 150%;
+
+            display: flex;
+            justify-content: space-between;
+
+            margin-left: 50%;
+            transform: translateX(-50%);
+
+            .shoulder {
+                width: 25px;
+                height: 50px;
+
+                background-color: black;
+
+                &-left {
+                    border-top-left-radius: 5px;
+                }
+
+                &-right {
+                    border-top-right-radius: 5px;
+                }
+
+                .arm {
+                    margin-top: 200%;
+                    margin-left: 50%;
+                    transform: translateX(-50%);
+
+                    width: 10px;
+                    height: 50px;
+
+                    background-color: navajowhite;
+
+                    &-left {
+
+                    }
+
+                    &-right {
+
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+    .legs {
+
+        display: flex;
+        justify-content: space-between;
+
+        margin-left: 50%;
+        transform: translateX(-50%);
+
+        width: 50%;
+
+        .leg {
+            width: 25px;
+            height: 50px;
+            background-color: black;
+        }
+
+    }
+
+    .shoes {
+        display: flex;
+        justify-content: space-between;
+
+        width: 55%;
+
+        margin-left: 50%;
+        transform: translateX(-50%);
+
+        .shoe {
+
+            background-color: white;
+            width: 30px;
+            height: 8px;
+
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+
+            &-left {
+
+            }
+
+            &-right {
+
+            }
+
+        }
+
+    }
+}
