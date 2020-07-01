@@ -65,6 +65,38 @@ if (!isset($_SESSION['username'])) {
         </div>
     </div>
 
+    <!-- Messages -->
+    <div id="msgBar" class="message-bar">
+        <div style="background-image: url('assets/img/lukydemboy.png');" id="bubble-lukydemboy" data-username="lukydemboy" class="msg-bubble"></div>
+    </div>
+    <div id="allChatWrappers" class="messages">
+        <div id="chat-1" class="chat-wrapper">
+            <div class="chat-action-bar">
+                <div class="chat-user">
+                    <div style="background-image: url('assets/img/lukydemboy.png');" class="chat-avatar"></div>
+                    <div class="chat-name">lukydemboy</div>
+                </div>
+                <div class="action-btns">
+                    <div data-username="lukydemboy" data-action="minimize" class="action-btn minimize-btn">
+                        <img src="assets/img/minimize.svg" alt="Minimize" class="chat-action-btn">
+                    </div>
+                    <div data-action="close" class="action-btn close-btn">
+                        <img src="assets/img/closebutton.svg" alt="Close" class="chat-action-btn">
+                    </div>
+                </div>
+            </div>
+            <div class="chat-messages">
+            </div>
+            <form>
+                <div class="chat-input-wrapper">
+                    <input type="text" class="chat-input" placeholder="Aa">
+                    <img class="send-icon" src="assets/img/send.svg" alt="Send...">
+                    <input type="submit" value="" class="hide">
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Hub Container -->
 
     <div class="container">
@@ -391,10 +423,6 @@ if (!isset($_SESSION['username'])) {
 
     </script>
     <script src="admin/js/canvas.js"></script>
-
-    <!-- Nav scripts -->
-    <script src="admin/js/notifications.js"></script>    
-    <script src="admin/js/friendsList.js"></script>
 
 
     <!-- Lobby scripts -->

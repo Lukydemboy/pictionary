@@ -50,6 +50,22 @@ function getFriendsList(node) {
 
             }
 
+            // Add clickevents to start the chats
+            const friendsAllDOM = document.getElementsByClassName('friend');
+
+
+            for (let i = 0; i < friendsAllDOM.length; i++) {
+                const friend = friendsAllDOM[i];
+
+                friend.addEventListener('click', e => {
+                    const source = e.target.closest('.friend');
+
+                    const username = source.dataset.username;
+
+                    createChatWrapper(username);
+                });
+            }
+
         }
     };
 }
@@ -58,6 +74,7 @@ function createFriendsList(friend, node) {
 
     const friendWrapper = document.createElement('div');
     friendWrapper.classList.add('friend');
+    friendWrapper.dataset.username = friend.username;
 
     const avatar = document.createElement('div');
     avatar.classList.add('friend-avatar');

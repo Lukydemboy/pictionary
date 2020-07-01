@@ -16,3 +16,7 @@
         <li class="navigation__list--item" data-page="logout"><a href="logout.php">Log Out</a></li>
     </ul>
 </header>
+<!-- Nav scripts -->
+<script src="admin/js/notifications.js"></script> 
+<script src="admin/actions/messages.js"></script>
+<script src="admin/js/friendsList.js"></script>
