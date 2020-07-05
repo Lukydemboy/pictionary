@@ -45,7 +45,8 @@ if (!isset($_SESSION['username'])) {
     <link rel="stylesheet" href="css/lobby.css">
     <link rel="stylesheet" href="css/nav.css">
     <link rel="stylesheet" href="css/canvas.css">
-    <link href="https://fonts.googleapis.com/css?family=Merriweather|Source+Sans+Pro:300,400,600,700,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;600&display=swap" rel="stylesheet">
+    <!-- <link href="https://fonts.googleapis.com/css?family=Merriweather|Source+Sans+Pro:300,400,600,700,900&display=swap" rel="stylesheet"> -->
     <script src="admin/js/nav.js"></script>
     <title>Pictionary</title>
 </head>
@@ -67,34 +68,9 @@ if (!isset($_SESSION['username'])) {
 
     <!-- Messages -->
     <div id="msgBar" class="message-bar">
-        <div style="background-image: url('assets/img/lukydemboy.png');" id="bubble-lukydemboy" data-username="lukydemboy" class="msg-bubble"></div>
     </div>
     <div id="allChatWrappers" class="messages">
-        <div id="chat-1" class="chat-wrapper">
-            <div class="chat-action-bar">
-                <div class="chat-user">
-                    <div style="background-image: url('assets/img/lukydemboy.png');" class="chat-avatar"></div>
-                    <div class="chat-name">lukydemboy</div>
-                </div>
-                <div class="action-btns">
-                    <div data-username="lukydemboy" data-action="minimize" class="action-btn minimize-btn">
-                        <img src="assets/img/minimize.svg" alt="Minimize" class="chat-action-btn">
-                    </div>
-                    <div data-action="close" class="action-btn close-btn">
-                        <img src="assets/img/closebutton.svg" alt="Close" class="chat-action-btn">
-                    </div>
-                </div>
-            </div>
-            <div class="chat-messages">
-            </div>
-            <form>
-                <div class="chat-input-wrapper">
-                    <input type="text" class="chat-input" placeholder="Aa">
-                    <img class="send-icon" src="assets/img/send.svg" alt="Send...">
-                    <input type="submit" value="" class="hide">
-                </div>
-            </form>
-        </div>
+
     </div>
 
     <!-- Hub Container -->

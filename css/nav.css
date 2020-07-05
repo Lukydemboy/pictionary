@@ -150,7 +150,7 @@ body {
 
 .navigation__logo h3 {
     color: #ffe9f3;
-    font-family: 'Merriweather', serif;
+    font-family: 'Poppins', serif;
     font-weight: 900;
 }
 
@@ -174,7 +174,7 @@ body {
 
 .navigation__list--item {
     text-transform: uppercase;
-    font-family: 'Merriweather', serif;
+    font-family: 'Poppins', serif;
     font-weight: 600;
 }
 

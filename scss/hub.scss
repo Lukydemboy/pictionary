@@ -1,10 +1,15 @@
 $light-color-light: #f4bfdb;
 $light-color-dark: #b27092;
+$light-color-darker: #512d38;
 $light-color-alt: #87baab;
 
 
 body {
-    font-family: 'Source Sans Pro';
+    font-family: 'Poppins';
+}
+
+h2 {
+    color: $light-color-darker;
 }
 
 .guest-modal {
@@ -38,7 +43,7 @@ body {
 
         font-weight: 700;
 
-        font-family: 'Merriweather';
+        font-family: 'Poppins';
         text-transform: uppercase;
 
         text-align: center;
@@ -56,6 +61,7 @@ body {
         label {
             color: $light-color-dark;
             margin-bottom: 5px;
+            font-size: 15px;
         }
 
         &--input {
@@ -133,7 +139,7 @@ body {
 
     background-color: white;
 
-    top: 59px;
+    top: 65px;
     right: 0;
     left: auto;
     bottom: auto;
@@ -156,7 +162,8 @@ body {
         
         .friend-list-title {
             text-align: center;
-            font-family: 'Merriweather';
+            font-family: 'Poppins';
+            color: $light-color-darker;
         }
     }
 
@@ -180,7 +187,8 @@ body {
         }
 
         &-name {
-            font-family: 'Source Sans Pro';
+            font-family: 'Poppins';
+            font-size: 14px;
         }
 
         &-online {
@@ -440,11 +448,12 @@ body {
         .game-browse--title {
             margin-top: 10px;
             margin-bottom: 55px;
-
+            color: $light-color-darker;
             text-align: center;
 
             font-size: 36px;
-            font-family: 'Merriweather';
+            // Merriweather
+            font-family: 'Poppins';
             font-weight: 600;
 
         }
@@ -478,10 +487,12 @@ body {
     .tile-content--title {
         margin: 15px 0;
 
-        font-family: 'Source Sans Pro';
+        font-family: 'Poppins';
         text-transform: uppercase;
         text-align: center;
         font-weight: 600;
+
+        color: $light-color-darker;
 
         background-color: transparent;
     }
@@ -606,7 +617,9 @@ body {
         span {
             margin-right: 5px;
             transition: margin-right .22s ease-out;
-
+            font-size: 13px;
+            margin-top: 1px;
+            color: $light-color-darker;
         }
 
         &:hover span {
@@ -638,12 +651,16 @@ body {
     .input_wrapper {
         margin: 0 25px;
         width: 50%;
-    }
 
+        label {
+            color: $light-color-darker;
+        }
+
+    }
 
     .form-input-text,
     .form-input-number {
-        font-family: 'Source Sans Pro';
+        font-family: 'Poppins';
         padding: 10px 15px;
         border: none;
         border-bottom: 1px solid $light-color-light;
@@ -651,7 +668,7 @@ body {
         margin-top: 15px;
 
         transition: all .22s ease-out;
-        font-size: 16px;
+        font-size: 13px;
 
         &:focus {
             border-bottom: 1px solid $light-color-dark;
@@ -659,10 +676,10 @@ body {
     }
 
     .form-input-submit {
-        font-family: 'Source Sans Pro';
+        font-family: 'Poppins';
         border: none;
         outline: none;
-        font-size: 18px;
+        font-size: 16px;
         background-color: $light-color-light;    
         padding: 10px 15px;
         border-radius: 5px;
@@ -726,15 +743,15 @@ body {
         -webkit-transition: .4s;
         border-radius: 34px;
         transition: .4s;
-        width: 38px;
+        width: 41px;
 
         &:before {
             position: absolute;
             content: "";
-            height: 12px;
-            width: 12px;
+            height: 14px;
+            width: 14px;
             left: 4px;
-            bottom: 4px;
+            bottom: 5.5px;
             background-color: white;
             -webkit-transition: .4s;
             border-radius: 50%;
@@ -817,14 +834,14 @@ input:checked + .slider:before {
 
     .table-header {
         font-weight: 600;
-        font-family: 'Merriweather';
+        font-family: 'Poppins';
         width: 100%;
         margin-bottom: 15px;
         border-bottom: 15px solid transparent;
 
         tbody {
             width: 100%;
-            font-family: 'Source Sans Pro';
+            font-family: 'Poppins';
         }
 
     }
@@ -881,7 +898,7 @@ input:checked + .slider:before {
 }
 
 .btn {
-    font-family: 'Source Sans Pro';
+    font-family: 'Poppins';
     border: none;
     outline: none;
     font-size: 18px;

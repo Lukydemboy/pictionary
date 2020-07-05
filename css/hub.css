@@ -1,5 +1,8 @@
 body {
-  font-family: 'Source Sans Pro'; }
+  font-family: 'Poppins'; }
+
+h2 {
+  color: #512d38; }
 
 .guest-modal {
   position: absolute;
@@ -21,7 +24,7 @@ body {
     color: #b27092;
     font-size: 24px;
     font-weight: 700;
-    font-family: 'Merriweather';
+    font-family: 'Poppins';
     text-transform: uppercase;
     text-align: center;
     margin-bottom: 30px; }
@@ -32,7 +35,8 @@ body {
     margin-bottom: 45px; }
     .guest-modal__form label {
       color: #b27092;
-      margin-bottom: 5px; }
+      margin-bottom: 5px;
+      font-size: 15px; }
     .guest-modal__form--input {
       width: 100%;
       padding: 5px 0;
@@ -74,7 +78,7 @@ body {
   display: flex;
   flex-direction: column;
   background-color: white;
-  top: 59px;
+  top: 65px;
   right: 0;
   left: auto;
   bottom: auto;
@@ -90,7 +94,8 @@ body {
     padding: 10px 0; }
     .friends-list .friends-list-header .friend-list-title {
       text-align: center;
-      font-family: 'Merriweather'; }
+      font-family: 'Poppins';
+      color: #512d38; }
   .friends-list .friend {
     display: flex;
     justify-content: space-between;
@@ -103,7 +108,8 @@ body {
     .friends-list .friend-avatar {
       width: 100%; }
     .friends-list .friend-name {
-      font-family: 'Source Sans Pro'; }
+      font-family: 'Poppins';
+      font-size: 14px; }
     .friends-list .friend-online--icon {
       width: 10px;
       height: 10px; }
@@ -252,9 +258,10 @@ body {
     .game-browse .game-browse__content .game-browse--title {
       margin-top: 10px;
       margin-bottom: 55px;
+      color: #512d38;
       text-align: center;
       font-size: 36px;
-      font-family: 'Merriweather';
+      font-family: 'Poppins';
       font-weight: 600; }
     .game-browse .game-browse__content .image__wrapper {
       height: 150px;
@@ -272,10 +279,11 @@ body {
       transition: all .44s; }
   .game-browse .tile-content--title {
     margin: 15px 0;
-    font-family: 'Source Sans Pro';
+    font-family: 'Poppins';
     text-transform: uppercase;
     text-align: center;
     font-weight: 600;
+    color: #512d38;
     background-color: transparent; }
 
 .sub-menu {
@@ -349,7 +357,10 @@ body {
     cursor: pointer; }
     .lobby .start-game__btn span {
       margin-right: 5px;
-      transition: margin-right .22s ease-out; }
+      transition: margin-right .22s ease-out;
+      font-size: 13px;
+      margin-top: 1px;
+      color: #512d38; }
     .lobby .start-game__btn:hover span {
       margin-right: 10px; }
     .lobby .start-game__btn .start-game__icon {
@@ -371,17 +382,20 @@ body {
   .lobby-form .input_wrapper {
     margin: 0 25px;
     width: 50%; }
+    .form .input_wrapper label,
+    .lobby-form .input_wrapper label {
+      color: #512d38; }
   .form .form-input-text,
   .form .form-input-number,
   .lobby-form .form-input-text,
   .lobby-form .form-input-number {
-    font-family: 'Source Sans Pro';
+    font-family: 'Poppins';
     padding: 10px 15px;
     border: none;
     border-bottom: 1px solid #f4bfdb;
     margin-top: 15px;
     transition: all .22s ease-out;
-    font-size: 16px; }
+    font-size: 13px; }
     .form .form-input-text:focus,
     .form .form-input-number:focus,
     .lobby-form .form-input-text:focus,
@@ -389,10 +403,10 @@ body {
       border-bottom: 1px solid #b27092; }
   .form .form-input-submit,
   .lobby-form .form-input-submit {
-    font-family: 'Source Sans Pro';
+    font-family: 'Poppins';
     border: none;
     outline: none;
-    font-size: 18px;
+    font-size: 16px;
     background-color: #f4bfdb;
     padding: 10px 15px;
     border-radius: 5px;
@@ -434,14 +448,14 @@ body {
     -webkit-transition: .4s;
     border-radius: 34px;
     transition: .4s;
-    width: 38px; }
+    width: 41px; }
     .slider__wrapper .slider:before {
       position: absolute;
       content: "";
-      height: 12px;
-      width: 12px;
+      height: 14px;
+      width: 14px;
       left: 4px;
-      bottom: 4px;
+      bottom: 5.5px;
       background-color: white;
       -webkit-transition: .4s;
       border-radius: 50%;
@@ -486,13 +500,13 @@ input:checked + .slider:before {
           background-color: #f4bfdb; }
   .join_room .table-header {
     font-weight: 600;
-    font-family: 'Merriweather';
+    font-family: 'Poppins';
     width: 100%;
     margin-bottom: 15px;
     border-bottom: 15px solid transparent; }
     .join_room .table-header tbody {
       width: 100%;
-      font-family: 'Source Sans Pro'; }
+      font-family: 'Poppins'; }
 
 .notification {
   position: absolute;
@@ -526,7 +540,7 @@ input:checked + .slider:before {
     animation: slideHide 1s; }
 
 .btn {
-  font-family: 'Source Sans Pro';
+  font-family: 'Poppins';
   border: none;
   outline: none;
   font-size: 18px;
