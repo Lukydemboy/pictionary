@@ -3,8 +3,6 @@ document.addEventListener('DOMContentLoaded', e => {
     getChatHeads();
 });
 
-
-
 function addActionsToBtns(chats) {
     for (let i = 0; i < chats.length; i++) {
         const chat = chats[i];
@@ -27,14 +25,14 @@ function addActionsToBtns(chats) {
                 switch(action) {
                     case 'minimize':
                         const chatHeadBubble = `
-                            <div style="background-image: url('assets/img/${username}.png');" data-username="${username}" class="msg-bubble"></div>
+                            <div id="chathead-${username}" style="background-image: url('assets/img/${username}.png');" data-username="${username}" class="msg-bubble"></div>
                         `;
 
                         const chatHeadDOM = document.getElementById('msgBar');
 
                         removeChatWrapper(source);
 
-                        addChatHead(chatHeadBubble, chatHeadDOM);
+                        addChatHead(chatHeadBubble, chatHeadDOM, username);
 
                         break;
 
@@ -63,13 +61,13 @@ function getChats() {
     return chats;
 }
 
-function createChatWrapper(username) {
+function createChatWrapper(id, username) {
     const chatDOM = document.getElementById('allChatWrappers');
 
     if (!chatDOM) return;
 
     const chatWrapperHTML = `
-    <div id="chat-1" class="chat-wrapper">
+    <div id="chat-${id}" class="chat-wrapper">
             <div class="chat-action-bar">
                 <div class="chat-user">
                     <div style="background-image: url('assets/img/${username}.png');" class="chat-avatar"></div>
@@ -108,6 +106,8 @@ function removeChatWrapper(source) {
 
     const chatDOM = document.getElementById(chatID);
 
+    if (!chatDOM) return;
+
     chatDOM.remove();
 }
 
@@ -121,10 +121,11 @@ function getChatHeads() {
             const source = e.target;
 
             const username = source.dataset.username;
+            const id = source.dataset.userid;
 
-            createChatWrapper(username);
+            createChatWrapper(id, username);
 
-            const chatHead = document.getElementById(`bubble-${username}`);
+            const chatHead = document.getElementById(`chathead-${username}`);
 
             removeChatHead(chatHead);
 
@@ -134,13 +135,14 @@ function getChatHeads() {
 
 }
 
-function addChatHead(html, node) {
+function addChatHead(html, node, username) {
+
+    if (document.getElementById(`chathead-${username}`)) return;
+
     node.insertAdjacentHTML('beforeend', html);
+    getChatHeads();
 }
 
 function removeChatHead(element) {
     element.remove();
 }
-
-
-

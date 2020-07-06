@@ -179,9 +179,9 @@ h2 {
           margin-right: 10px; }
         .messages .chat-wrapper .chat-action-bar .chat-user .chat-name {
           cursor: pointer;
-          transition: all .22s ease-out; }
+          font-size: 14px; }
           .messages .chat-wrapper .chat-action-bar .chat-user .chat-name:hover {
-            font-weight: 700; }
+            font-weight: 600; }
       .messages .chat-wrapper .chat-action-bar .action-btns {
         display: flex;
         align-items: center; }
@@ -390,12 +390,13 @@ h2 {
   .lobby-form .form-input-text,
   .lobby-form .form-input-number {
     font-family: 'Poppins';
-    padding: 10px 15px;
     border: none;
     border-bottom: 1px solid #f4bfdb;
     margin-top: 15px;
+    padding: 10px 15px;
     transition: all .22s ease-out;
-    font-size: 13px; }
+    font-size: 13px;
+    width: 100%; }
     .form .form-input-text:focus,
     .form .form-input-number:focus,
     .lobby-form .form-input-text:focus,
@@ -487,7 +488,8 @@ input:checked + .slider:before {
     .join_room .rooms-list tbody tr:nth-child(even) {
       background-color: #ffe9f3; }
     .join_room .rooms-list tbody tr td {
-      padding: 7.5px 0; }
+      padding: 7.5px 0;
+      font-size: 13px; }
       .join_room .rooms-list tbody tr td .join-button {
         background-color: #b27092;
         padding: 5px  10px;
@@ -528,7 +530,8 @@ input:checked + .slider:before {
     width: 100%;
     height: 100%;
     justify-content: center;
-    align-items: center; }
+    align-items: center;
+    font-size: 14px; }
     .notification .notification__content p {
       color: #5c565a;
       font-size: 14px;

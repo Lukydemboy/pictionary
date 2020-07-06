@@ -301,10 +301,12 @@ h2 {
                 .chat-name {
                     cursor: pointer;
 
-                    transition: all .22s ease-out;
+                    font-size: 14px;
+                    
+                    // transition: all .44s;
                     
                     &:hover {
-                        font-weight: 700;
+                        font-weight: 600;
                     }
 
                 }
@@ -661,14 +663,17 @@ h2 {
     .form-input-text,
     .form-input-number {
         font-family: 'Poppins';
-        padding: 10px 15px;
+
         border: none;
         border-bottom: 1px solid $light-color-light;
 
         margin-top: 15px;
+        padding: 10px 15px;
 
         transition: all .22s ease-out;
         font-size: 13px;
+
+        width: 100%;
 
         &:focus {
             border-bottom: 1px solid $light-color-dark;
@@ -804,6 +809,7 @@ input:checked + .slider:before {
 
                 td {
                     padding: 7.5px 0;
+                    font-size: 13px;
 
                     .join-button {
                         background-color: $light-color-dark;
@@ -876,6 +882,7 @@ input:checked + .slider:before {
         height: 100%;
         justify-content: center;
         align-items: center;
+        font-size: 14px;        
 
         p {
             color: #5c565a;

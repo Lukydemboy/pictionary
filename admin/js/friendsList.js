@@ -61,8 +61,9 @@ function getFriendsList(node) {
                     const source = e.target.closest('.friend');
 
                     const username = source.dataset.username;
+                    const id = source.dataset.userid;
 
-                    createChatWrapper(username);
+                    createChatWrapper(id, username);
                 });
             }
 
@@ -74,7 +75,8 @@ function createFriendsList(friend, node) {
 
     const friendWrapper = document.createElement('div');
     friendWrapper.classList.add('friend');
-    friendWrapper.dataset.username = friend.username;
+    friendWrapper.dataset.username  = friend.username;
+    friendWrapper.dataset.userid    = friend.userID;
 
     const avatar = document.createElement('div');
     avatar.classList.add('friend-avatar');
