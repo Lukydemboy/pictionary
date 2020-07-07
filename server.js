@@ -123,7 +123,6 @@ io.on("connection", function(socket) {
 
     // Check if user already joined the room
     if (roomObjects[room].playerNames.includes(user.username)) {
-      console.log(roomObjects[room]);
       socket.emit('already joined');
       return;
     }
@@ -143,8 +142,6 @@ io.on("connection", function(socket) {
     // Join de room en stuur 'join room' event naar de client.
     socket.join(room);
     socket.emit('joined room', roomObjects[room]);
-
-    console.log(playingRoomObjects[room]);
 
     if (!playingRoomObjects[room]) {
       socket.emit('join room', room);
@@ -389,16 +386,16 @@ io.on("connection", function(socket) {
 
   // Next player to draw
   socket.on('start next player', room => {
-    console.log('new player');
     const nextPlayerRoom = nextPlayer(room)
     io.in(room.name).emit('next player', nextPlayerRoom);
   });
 
+  // Start new round
   socket.on('start new round', room => {
-    // TODO !!!! Nog een fout bij een nieuwe ronde, de gekozen drawingUser is constant dezelfde
     nextRound(room);
   });
 
+  // kick
   socket.on('kick player', (username, socketID, room) => {
     console.log(`Kicking ${username} from ${room}`);
 
@@ -436,9 +433,29 @@ io.on("connection", function(socket) {
 
   });
 
+  // Game has ended
   socket.on('game ended', room => {
     // Deleting room out of playingRoomObjects
     delete playingRoomObjects[room];
+  });
+
+  // Private Chat
+  socket.on('send private message', (senderID, username, message) => {
+    if (message == '') return;
+
+    const keys = Object.values(connectedUsers);
+
+    for (const user in keys) {
+
+      const entry = keys[user];
+
+      if (entry.username === username) {
+        io.to(entry.socketId).emit('message received', message, senderID);
+        return;
+      }
+
+    }
+
   });
 
 });

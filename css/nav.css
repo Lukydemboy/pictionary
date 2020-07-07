@@ -67,7 +67,7 @@ body {
 
     z-index: 15;
     
-    transition: all .22s ease-out;
+    transition: height .22s ease-out;
 
 }
 

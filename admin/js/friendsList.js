@@ -77,6 +77,10 @@ function createFriendsList(friend, node) {
     friendWrapper.classList.add('friend');
     friendWrapper.dataset.username  = friend.username;
     friendWrapper.dataset.userid    = friend.userID;
+    
+    // Get messgs from db
+    friendWrapper.dataset.messages  = 0;
+    friendWrapper.classList.add('hide-ribbon');
 
     const avatar = document.createElement('div');
     avatar.classList.add('friend-avatar');

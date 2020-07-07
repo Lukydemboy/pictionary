@@ -70,7 +70,7 @@ if (!isset($_SESSION['username'])) {
     <div id="msgBar" class="message-bar">
     </div>
     <div id="allChatWrappers" class="messages">
-
+        
     </div>
 
     <!-- Hub Container -->

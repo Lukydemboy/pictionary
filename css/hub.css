@@ -97,6 +97,7 @@ h2 {
       font-family: 'Poppins';
       color: #512d38; }
   .friends-list .friend {
+    position: relative;
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
@@ -105,6 +106,22 @@ h2 {
     transition: all .22s ease-out; }
     .friends-list .friend:hover {
       background-color: rgba(0, 0, 0, 0.1); }
+    .friends-list .friend:before {
+      content: attr(data-messages);
+      position: absolute;
+      top: auto;
+      left: auto;
+      right: 10px;
+      bottom: auto;
+      background-color: #b27092;
+      width: 17.5px;
+      height: 17.5px;
+      text-align: center;
+      border-radius: 50%;
+      font-size: 12px;
+      color: whitesmoke; }
+    .friends-list .friend.hide-ribbon:before {
+      display: none; }
     .friends-list .friend-avatar {
       width: 100%; }
     .friends-list .friend-name {
@@ -198,8 +215,34 @@ h2 {
             width: 100%;
             height: 100%; }
     .messages .chat-wrapper .chat-messages {
+      box-sizing: border-box;
       height: calc(100% - 50px);
-      width: 100%; }
+      padding: 7.5px 10px;
+      overflow-y: scroll; }
+      .messages .chat-wrapper .chat-messages .start-conversation-msg {
+        font-size: 13px;
+        margin: 0 auto;
+        width: 80%;
+        text-align: center;
+        color: #512d38; }
+      .messages .chat-wrapper .chat-messages .message {
+        display: table;
+        box-sizing: border-box;
+        font-size: 14px;
+        max-width: 80%;
+        margin-bottom: 10px;
+        padding: 5px 10px; }
+        .messages .chat-wrapper .chat-messages .message.received {
+          background-color: rgba(0, 0, 0, 0.1);
+          border-top-left-radius: 7.5px;
+          border-top-right-radius: 7.5px;
+          border-bottom-right-radius: 7.5px; }
+        .messages .chat-wrapper .chat-messages .message.sent {
+          margin-left: auto;
+          background-color: rgba(135, 186, 171, 0.7);
+          border-top-left-radius: 7.5px;
+          border-top-right-radius: 7.5px;
+          border-bottom-left-radius: 7.5px; }
     .messages .chat-wrapper .chat-input-wrapper {
       box-sizing: border-box;
       padding: 10px 5px;

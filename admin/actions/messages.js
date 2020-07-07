@@ -1,6 +1,44 @@
 document.addEventListener('DOMContentLoaded', e => {
     getChats();
     getChatHeads();
+
+    socket.on('message received', (message, senderID) => {
+        if (!message || !senderID) return;
+
+        const chatWrapper = document.getElementById(`chat-${senderID}`);
+
+        if (!chatWrapper) {
+            const friendWrapperAll = document.getElementsByClassName('friend');
+
+            for (let i = 0; i < friendWrapperAll.length; i++) {
+                const friendWrapper = friendWrapperAll[i];
+
+                if (friendWrapper.dataset.userid === senderID) {
+                    friendWrapper.dataset.messages = parseInt(friendWrapper.dataset.messages) + 1;
+                    friendWrapper.classList.remove('hide-ribbon');
+                    return;
+                }
+
+            }
+
+        };
+
+        // TODO:: set chat-ribbon (1) (new message)
+
+        const messageWrapper = chatWrapper.getElementsByClassName('chat-messages')[0];
+
+        const receivedMsg = {
+            msgBody: message,
+            senderID: senderID
+        }
+
+        const receivedMsgHTML = makeMessage(receivedMsg);
+        
+        messageWrapper.appendChild(receivedMsgHTML);
+        updatePrivateChatScroll(messageWrapper);
+
+    });
+
 });
 
 function addActionsToBtns(chats) {
@@ -22,10 +60,13 @@ function addActionsToBtns(chats) {
                 const action = source.dataset.action;
                 const username = source.dataset.username;
 
+                const chatWrapper = source.closest('.chat-wrapper');
+                const friendID = chatWrapper.id.split('-')[1];
+
                 switch(action) {
                     case 'minimize':
                         const chatHeadBubble = `
-                            <div id="chathead-${username}" style="background-image: url('assets/img/${username}.png');" data-username="${username}" class="msg-bubble"></div>
+                            <div id="chathead-${username}" data-userid="${friendID}" style="background-image: url('assets/img/${username}.png');" data-username="${username}" class="msg-bubble"></div>
                         `;
 
                         const chatHeadDOM = document.getElementById('msgBar');
@@ -40,6 +81,7 @@ function addActionsToBtns(chats) {
                         removeChatWrapper(source);
 
                         break;
+
                     default:
                         return;
                 }
@@ -53,21 +95,24 @@ function addActionsToBtns(chats) {
 
 function getChats() {
     const chats = document.getElementsByClassName('chat-wrapper');
+    const chatForms = document.getElementsByClassName('friend-chat-form');
 
     if (!chats) return;
 
     addActionsToBtns(chats);
+    addSendListener(chatForms);
 
     return chats;
 }
 
 function createChatWrapper(id, username) {
+    
     const chatDOM = document.getElementById('allChatWrappers');
 
     if (!chatDOM) return;
 
     const chatWrapperHTML = `
-    <div id="chat-${id}" class="chat-wrapper">
+    <div id="chat-${id}" data-username="${username}" class="chat-wrapper">
             <div class="chat-action-bar">
                 <div class="chat-user">
                     <div style="background-image: url('assets/img/${username}.png');" class="chat-avatar"></div>
@@ -83,8 +128,9 @@ function createChatWrapper(id, username) {
                 </div>
             </div>
             <div class="chat-messages">
+                <p class="start-conversation-msg">Start a conversation with <br>${username}</p>
             </div>
-            <form>
+            <form class="friend-chat-form">
                 <div class="chat-input-wrapper">
                     <input type="text" class="chat-input" placeholder="Aa">
                     <img class="send-icon" src="assets/img/send.svg" alt="Send...">
@@ -95,8 +141,10 @@ function createChatWrapper(id, username) {
     </div>`;
 
     chatDOM.insertAdjacentHTML('beforeend', chatWrapperHTML);
+    getMessages(id);
 
     getChats();
+    
 
 }
 
@@ -146,3 +194,133 @@ function addChatHead(html, node, username) {
 function removeChatHead(element) {
     element.remove();
 }
+
+function addSendListener(forms) {
+    for (let i = 0; i < forms.length; i++) {
+        const form = forms[i];
+        const chatInput = form.getElementsByClassName('chat-input')[0];
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+
+            const chatWrapper = e.target.closest('.chat-wrapper');
+            const messageWrapper = chatWrapper.getElementsByClassName('chat-messages')[0];
+
+            if (!chatInput.value || chatInput.value === "") return;
+
+            // Send message to DB
+            const act = 'add'
+            const senderID = user.userID;
+            const type = 'Private Message';
+            const recevierID = chatWrapper.id.split('-')[1];
+            const receiverUsername = chatWrapper.dataset.username;
+            const msg = chatInput.value
+
+            const xhr = new XMLHttpRequest();
+            const body = `act=${act}&senderid=${senderID}&type=${type}&recid=${recevierID}&msg=${msg}`;
+
+            xhr.open('POST', 'admin/php/message.php', true);
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+            xhr.send(body);
+
+            xhr.onload = function () {
+                if (xhr.status == 200) {
+                    // Add to chat wrapper (make function)
+                    const message = {
+                        senderID: senderID,
+                        type: type,
+                        recevierID: recevierID,
+                        msgBody: msg
+                    }
+
+                    const msgHTML = makeMessage(message);
+                    messageWrapper.appendChild(msgHTML);
+
+                    chatInput.value = '';
+
+                    updatePrivateChatScroll(messageWrapper);
+
+                    socket.emit('send private message', senderID, receiverUsername, msg)
+
+                } else {
+                    notificate('warning', 'Your message could not be sent.')
+                }
+            };
+
+            xhr.onerror = function () {
+                notificate('warning', 'Your message could not be sent.')
+            };
+
+        });
+
+    }
+}
+
+function getMessages(friendID) {
+    const chatWrapper = document.getElementById(`chat-${friendID}`);
+    const messagesWrapper = chatWrapper.getElementsByClassName('chat-messages')[0];
+
+    const xhr = new XMLHttpRequest();
+
+    xhr.open('POST', 'admin/php/message.php', true);
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+    const act = 'get';
+    const userID = user.userID;
+    const body = `act=${act}&friendid=${friendID}&userid=${userID}`;
+
+    xhr.send(body);
+
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            // Place all messages in HTML
+            const messages = JSON.parse(xhr.response);
+            fillChatWrapper(messages, messagesWrapper);
+
+        } else {
+            notificate('warning', 'Could not fetch the messages for this person!');
+        }
+    };
+
+    xhr.onerror = () => {
+        notificate('warning', 'Could not fetch the messages for this person!');
+    };
+
+}
+
+function fillChatWrapper(messages, node) {
+    if (messages.length == 0) return;
+
+    node.innerHTML = '';
+
+    for (let i = 0; i < messages.length; i++) {
+        const msg = messages[i];
+        const msgWrapper = makeMessage(msg);
+        node.appendChild(msgWrapper);
+    }
+
+    updatePrivateChatScroll(node);
+
+}
+
+function makeMessage(message) {
+    const messageWrapper = document.createElement('div');
+    messageWrapper.classList.add('message');
+
+    if (message.senderID === user.userID) {
+        messageWrapper.classList.add('sent');
+    } else {
+        messageWrapper.classList.add('received');
+    }
+
+    messageWrapper.innerHTML = message.msgBody;
+
+    return messageWrapper;
+
+}
+
+function updatePrivateChatScroll(messageWrapper) {
+    messageWrapper.scrollTop = messageWrapper.scrollHeight;
+}
+
