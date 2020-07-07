@@ -144,6 +144,10 @@ function createChatWrapper(id, username) {
     getMessages(id);
 
     getChats();
+
+    const newChatWrapper = document.getElementById(`chat-${id}`);
+
+    focusChatInput(newChatWrapper);
     
 
 }
@@ -324,3 +328,8 @@ function updatePrivateChatScroll(messageWrapper) {
     messageWrapper.scrollTop = messageWrapper.scrollHeight;
 }
 
+function focusChatInput(chatWrapper) {
+    const chatInput = chatWrapper.getElementsByClassName('chat-input')[0];
+    if (!chatInput) return;
+    chatInput.focus();
+}
