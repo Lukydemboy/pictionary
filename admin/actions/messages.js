@@ -109,6 +109,10 @@ function createChatWrapper(id, username) {
 
     if (!chatDOM) return;
 
+    const existsChatWrapper = document.getElementById(`chat-${id}`)
+
+    if (existsChatWrapper) return;
+
     const chatWrapperHTML = `
     <div id="chat-${id}" data-username="${username}" class="chat-wrapper">
             <div class="chat-action-bar">
