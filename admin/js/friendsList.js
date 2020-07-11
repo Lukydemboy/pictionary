@@ -77,10 +77,10 @@ function createFriendsList(friend, node) {
     friendWrapper.classList.add('friend');
     friendWrapper.dataset.username  = friend.username;
     friendWrapper.dataset.userid    = friend.userID;
+    friendWrapper.id                = `friend-${friend.userID}`;
     
-    // Get messgs from db
-    friendWrapper.dataset.messages  = 0;
-    friendWrapper.classList.add('hide-ribbon');
+    // Get messgs from db (to get unread messages per friend)
+    getUnreadMessagesCount(friend.userID, friendWrapper);
 
     const avatar = document.createElement('div');
     avatar.classList.add('friend-avatar');
@@ -105,5 +105,33 @@ function createFriendsList(friend, node) {
     friendWrapper.appendChild(online);
 
     node.appendChild(friendWrapper);
+
+}
+
+function getUnreadMessagesCount(friendID, friendWrapper) {
+
+    
+    let unreadMsgs;
+
+    const act = 'getUnread';
+    const body = `act=${act}&friendid=${friendID}`;
+
+    const xhr = new XMLHttpRequest();
+
+    xhr.open('POST', 'admin/php/message.php');
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+    xhr.send(body);
+
+    xhr.onload = () => {
+        if (xhr.status == 200) {
+            friendWrapper.dataset.messages = xhr.response;
+
+            if (xhr.response == 0) { 
+                friendWrapper.classList.add('hide-ribbon');
+            }
+
+        }
+    };
 
 }

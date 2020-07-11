@@ -8,8 +8,6 @@ if (!isset($_POST['act'])) return;
 
 $act = $_POST['act'];
 
-// print_r($_POST);
-
 switch ($act) {
 
     case 'add':
@@ -55,7 +53,6 @@ switch ($act) {
                                 WHERE (MS.IsDeleted = :deleted) && (MR.UserID = :userID OR M.SenderID = :userID OR M.MessageType = :globalType)');
         $STH -> bindParam(':deleted', $deleted);
         $STH -> bindParam(':userID', $_POST['friendid']);
-        // $STH -> bindParam(':senderID', $_POST['userid']);
         $STH -> bindParam(':globalType', $globalType);
 
         $STH -> setFetchMode(PDO::FETCH_OBJ);
@@ -77,5 +74,52 @@ switch ($act) {
         }
 
         echo json_encode($msgArray);
+        break;
 
+    case 'getUnread':
+        $globalType = 'Global Message';
+        $deleted = 0;
+        $unread = 0;
+
+        $STH = $DBH -> prepare('SELECT COUNT(M.MessageID) FROM Messages M 
+                                LEFT JOIN MessageRecipients MR ON MR.MessageID = M.MessageID 
+                                LEFT JOIN MessageStatus MS ON MS.MessageID = M.MessageID 
+                                WHERE   (MS.IsDeleted = :deleted) && (MR.UserID = :userID 
+                                        OR M.SenderID = :userID 
+                                        OR M.MessageType = :globalType) && (MS.isRead = :unread)');
+
+        $STH -> bindParam(':deleted', $deleted);
+        $STH -> bindParam(':userID', $_POST['friendid']);
+        $STH -> bindParam(':unread', $unread);
+        $STH -> bindParam(':globalType', $globalType);
+
+        $STH -> setFetchMode(PDO::FETCH_ASSOC);
+
+        $STH -> execute();
+
+        $row = $STH -> fetch();
+
+        echo ($row['COUNT(M.MessageID)']);
+
+        break;
+
+    case 'readMessages':
+        $read = 1;
+
+        $STH = $DBH -> prepare('UPDATE MessageStatus AS MS
+                                INNER JOIN Messages M ON MS.MessageID = M.MessageID
+                                SET isRead = :read 
+                                WHERE M.SenderID = :friendID && MS.UserID = :userID');
+
+        $STH -> bindParam(':read', $read);
+        $STH -> bindParam(':friendID', $_POST['friendid']);
+        $STH -> bindParam(':userID', $_POST['userid']);
+
+        $STH -> execute();
+
+        break;
+
+    default:
+        echo 'No act has been found!';
+        break;
 }

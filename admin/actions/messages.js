@@ -23,8 +23,6 @@ document.addEventListener('DOMContentLoaded', e => {
 
         };
 
-        // TODO:: set chat-ribbon (1) (new message)
-
         const messageWrapper = chatWrapper.getElementsByClassName('chat-messages')[0];
 
         const receivedMsg = {
@@ -149,6 +147,8 @@ function createChatWrapper(id, username) {
 
     focusChatInput(newChatWrapper);
     
+    const friendWrapper = document.getElementById(`friend-${id}`);
+    resetNewMessages(friendWrapper, id);
 
 }
 
@@ -280,6 +280,7 @@ function getMessages(friendID) {
         if (xhr.status === 200) {
             // Place all messages in HTML
             const messages = JSON.parse(xhr.response);
+            
             fillChatWrapper(messages, messagesWrapper);
 
         } else {
@@ -289,6 +290,28 @@ function getMessages(friendID) {
 
     xhr.onerror = () => {
         notificate('warning', 'Could not fetch the messages for this person!');
+    };
+
+}
+
+function readMessages(friendID) {
+
+    const act = 'readMessages';
+    const userID = user.userID;
+    const body = `act=${act}&userid=${userID}&friendid=${friendID}`;
+
+    const xhr = new XMLHttpRequest();
+
+    xhr.open('POST', 'admin/php/message.php');
+
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+    xhr.send(body);
+
+    xhr.onload = function () {
+        if (xhr.status != 200) { 
+            console.log('Error reading messages!');
+        } 
     };
 
 }
@@ -332,4 +355,10 @@ function focusChatInput(chatWrapper) {
     const chatInput = chatWrapper.getElementsByClassName('chat-input')[0];
     if (!chatInput) return;
     chatInput.focus();
+}
+
+function resetNewMessages(friendWrapper, friendID) {
+    friendWrapper.dataset.messages = 0;
+    friendWrapper.classList.add('hide-ribbon');
+    readMessages(friendID);
 }
