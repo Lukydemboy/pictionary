@@ -15,7 +15,7 @@ if (isset($_GET['msg'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/login.css">
     <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css?family=Merriweather|Source+Sans+Pro:300,400,600,700,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;600&display=swap" rel="stylesheet">
 
     <title>Pictionary</title>
 </head>
@@ -38,20 +38,47 @@ if (isset($_GET['msg'])) {
     <div id="loginModal" class="login__wrapper">
         <div class="center">
             <div class="login">
-                <form action="handleLogin.php" method="POST">
+                <form id="form" action="handleLogin.php" method="POST">
                     <div class="login__username login__input">
                         <label for="username">Username</label>
-                        <input type="text" name="username" id="username" placeholder="Username">
+                        <input type="text" class="<?php if (isset($_GET['msg'])) { if ($_GET['msg'] === 'usernameUsed' || $_GET['msg'] === 'emailUsernameUsed') { echo 'taken'; }}?>" name="username" value="<?php if (isset($_SESSION['registerUsername'])) { echo $_SESSION['registerUsername']; } ?>" id="username" placeholder="Username" required>
+                        <?php 
+                            if (isset($_GET['msg'])) {
+                                if ($_GET['msg'] === 'usernameUsed' || $_GET['msg'] == 'emailUsernameUsed') {
+                                    echo '<div class="input-errormsg">
+                                            This username is already in use.
+                                        </div>';
+                                }
+                            }
+                        ?>
+                    </div>
+                    <div id="registerEmail" class="login__input hidden">
+                        <label for="registerEmail">Email</label>
+                        <input class="<?php if (isset($_GET['msg'])) { if ($_GET['msg'] === 'emailUsed' || $_GET['msg'] === 'emailUsernameUsed') { echo 'taken'; }} ?>" type="email" value="<?php if (isset($_SESSION['registerEmail'])) { echo $_SESSION['registerEmail']; } ?>" name="registerEmail" placeholder="Email" required>
+                        <?php 
+                            if (isset($_GET['msg'])) {
+                                if ($_GET['msg'] === 'emailUsed' || $_GET['msg'] === "emailUsernameUsed") {
+                                    echo '<div class="input-errormsg">
+                                            This email is already in use.
+                                        </div>';
+                                }
+                            }
+                        ?>
                     </div>
                     <div class="login__password login__input">
                         <label for="password">Password</label>
-                        <input type="password" name="password" id="password" placeholder="Password">
+                        <input type="password" name="password" id="password" placeholder="Password" required>
                     </div>
                     <div class="button__wrapper">
-                        <input class="login__btn" type="submit" name="loginBtn" value="Login">
+                        <input type="hidden" id="actInput" name="act" value="login">
+                        <input id="submitButton" class="login__btn" type="submit" name="loginBtn" value="Login">
                         <img src="assets/img/right-arrow.svg" alt="->" class="button--img">
                     </div>
+                    
                 </form>
+                <div class="login-register">
+                    <span id="loginRegister" class="login-register--text"><a id="otherChoice" href="">Or make an account</a></span>
+                </div>
             </div>
         </div>
     </div>
@@ -62,9 +89,7 @@ if (isset($_GET['msg'])) {
         if(document.location.toString().indexOf('?') !== -1) {
             const query = document.location
                         .toString()
-                        // get the query string
                         .replace(/^.*?\?/, '')
-                        // and remove any existing hash string (thanks, @vrijdenker)
                         .replace(/#.*$/, '')
                         .split('&');
 
@@ -116,6 +141,12 @@ if (isset($_GET['msg'])) {
         });
 
     </script>
+
+    <script>
+        const msg = '<?php echo $_GET['msg'] ?>';
+    </script>
+
+    <script src="admin/actions/register.js"></script>
 
 </body>
 </html>

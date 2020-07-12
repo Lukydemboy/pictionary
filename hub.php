@@ -29,7 +29,6 @@ if (!isset($_SESSION['username'])) {
         exit();
     }
 } else {
-
     $_SESSION['roomToJoin'] = '';
 }
 
@@ -56,7 +55,6 @@ if (!isset($_SESSION['username'])) {
     ?>
 
     <!-- FRIENDS LIST -->
-
     <div id="friendsList" class="friends-list">
         <div class="friends-list-header">
             <h2 class="friend-list-title">Friends List</h2>
@@ -74,7 +72,6 @@ if (!isset($_SESSION['username'])) {
     </div>
 
     <!-- Hub Container -->
-
     <div class="container">
         <div id="gameBrowse" class="game-browse">
             <div class="side-img image__wrapper">

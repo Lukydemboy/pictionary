@@ -1,5 +1,6 @@
 $light-color-light: #f4bfdb;
 $light-color-dark: #b27092;
+$light-color-darker: #512d38;
 
 body {
     background-image: url('../assets/img/login.jpg');
@@ -13,6 +14,8 @@ body {
     width: 100vw;
     height: 100vh;
 
+    margin-bottom: auto;
+
     .center {
         width: 100%;
         height: 100%;
@@ -22,46 +25,109 @@ body {
         align-items: center;
 
         .login {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
             background-color: white;
 
             border-radius: 5px;
 
             padding: 50px 50px;
-            display: flex;
 
             -webkit-box-shadow: 2px 4px 23px 9px rgba(0,0,0,0.1);
             -moz-box-shadow: 2px 4px 23px 9px rgba(0,0,0,0.1);
             box-shadow: 2px 4px 23px 9px rgba(0,0,0,0.1);
+
+            &__input {
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 20px;
+
+                &.hidden {
+                    position: absolute;
+                    opacity: 0;
+                    visibility: hidden;
+                    height: 0px;
+                    font-size: 0px;
+
+                    & > * {
+                        height: 0px;
+                        font-size: 0px;
+                    }
+                    
+                }
+
+                label {
+
+                    margin-bottom: 5px;
+
+                    font-family: 'Poppins';
+                    font-weight: 700;
+                    color: $light-color-darker;
+
+                }
+
+                input {
+                    width: 100%;
+                    padding: 5px 0;
+
+                    border: none;
+                    border-bottom: 1px solid $light-color-light;
+
+                    font-size: 13px;
+                }
+
+                input.taken {
+                    border-bottom: 1px solid red;
+                }
+
+                input:focus {
+                    border-bottom: 1px solid $light-color-dark;
+                }
+
+                ::placeholder {
+                    color: rgba(0,0,0,0.6);
+                }
+
+                .input-errormsg {
+                    color :red;
+                    font-family: 'Poppins';
+                    font-size: 12.5px;
+                }
+
+            }
+
+            &-register {
+                font-family: 'Poppins';
+
+                color: $light-color-dark;
+
+                margin-top: 30px;
+                margin-bottom: -35px;
+
+                &--text {
+                    font-size: 12px;
+
+                    & a {
+                        color: $light-color-dark;
+                        
+                        transition: all .22s ease-out;
+
+                        &:hover {
+                            font-weight: 600;
+                        }
+                        
+                    }
+
+                }
+
+
+            }
+
         }
         
-        .login__input {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 20px;
-
-            label {
-                margin-bottom: 5px;
-                color: rgba(0,0,0,0.6);;
-                font-family: 'Source Sans Pro';
-                font-weight: 700;
-            }
-
-            input {
-                width: 100%;
-                padding: 5px 0;
-                border: none;
-                border-bottom: 1px solid $light-color-light;
-                font-size: 13px;
-            }
-
-            input:focus {
-                border-bottom: 1px solid $light-color-dark;
-            }
-
-            ::placeholder {
-                color: rgba(0,0,0,0.6);
-            }
-        }
+        
 
         .button__wrapper {
             display: flex;

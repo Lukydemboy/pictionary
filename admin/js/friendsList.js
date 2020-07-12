@@ -109,7 +109,6 @@ function createFriendsList(friend, node) {
 }
 
 function getUnreadMessagesCount(friendID, friendWrapper) {
-
     
     let unreadMsgs;
 
