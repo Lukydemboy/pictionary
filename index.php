@@ -54,7 +54,7 @@ if (isset($_GET['msg'])) {
                     </div>
                     <div id="registerEmail" class="login__input hidden">
                         <label for="registerEmail">Email</label>
-                        <input class="<?php if (isset($_GET['msg'])) { if ($_GET['msg'] === 'emailUsed' || $_GET['msg'] === 'emailUsernameUsed') { echo 'taken'; }} ?>" type="email" value="<?php if (isset($_SESSION['registerEmail'])) { echo $_SESSION['registerEmail']; } ?>" name="registerEmail" placeholder="Email" required>
+                        <input id="registerEmailInput" class="<?php if (isset($_GET['msg'])) { if ($_GET['msg'] === 'emailUsed' || $_GET['msg'] === 'emailUsernameUsed') { echo 'taken'; }} ?>" type="email" value="<?php if (isset($_SESSION['registerEmail'])) { echo $_SESSION['registerEmail']; } ?>" name="registerEmail" placeholder="Email">
                         <?php 
                             if (isset($_GET['msg'])) {
                                 if ($_GET['msg'] === 'emailUsed' || $_GET['msg'] === "emailUsernameUsed") {
@@ -143,7 +143,7 @@ if (isset($_GET['msg'])) {
     </script>
 
     <script>
-        const msg = '<?php echo $_GET['msg'] ?>';
+        const msg = '<?php if (isset($_GET['msg'])) { echo $_GET['msg']; } ?>';
     </script>
 
     <script src="admin/actions/register.js"></script>

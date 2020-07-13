@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', e => {
+    const registerEmailInputDOM = document.getElementById('registerEmailInput');
     const loginRegisterDOM = document.getElementById('loginRegister');
     const registerEmailDOM = document.getElementById('registerEmail');
     const submitButtonDOM = document.getElementById('submitButton');
@@ -13,6 +14,8 @@ document.addEventListener('DOMContentLoaded', e => {
 
         if (registerState === false) {
             registerEmailDOM.classList.remove('hidden');
+            registerEmailInputDOM.setAttribute('required', 'required');
+
             submitButtonDOM.value = "Register";
             otherChoiceDOM.innerHTML = 'Already have an account?';
             registerState = true;
@@ -20,7 +23,7 @@ document.addEventListener('DOMContentLoaded', e => {
             actInputDOM.value = 'register';
         } else {     
             deleteErrorMsg();
-
+            registerEmailInputDOM.removeAttribute('required');
             registerEmailDOM.classList.add('hidden');
             submitButtonDOM.value = "Log in";
             otherChoiceDOM.innerHTML = 'Or make an account';
