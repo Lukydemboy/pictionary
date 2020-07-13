@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', e => {
             actInputDOM.value = 'register';
         } else {     
             deleteErrorMsg();
+            
             registerEmailInputDOM.removeAttribute('required');
             registerEmailDOM.classList.add('hidden');
             submitButtonDOM.value = "Log in";

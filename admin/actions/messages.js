@@ -353,6 +353,14 @@ function makeMessage(message) {
 
 function updatePrivateChatScroll(messageWrapper) {
     messageWrapper.scrollTop = messageWrapper.scrollHeight;
+
+    // Get friendWrapper and UserID to mark the messages as read
+    const chatWrapper = messageWrapper.closest('.chat-wrapper');
+    const id = chatWrapper.id.split('-')[1];
+
+    const friendWrapper = document.getElementById(`friend-${id}`);
+
+    resetNewMessages(friendWrapper, id);
 }
 
 function focusChatInput(chatWrapper) {
