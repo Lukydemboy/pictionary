@@ -1,6 +1,22 @@
 document.addEventListener('DOMContentLoaded', e => {
 
     const friendsListDOM = document.getElementById('friendListBody');
+    const friendsListHideDOM = document.getElementsByClassName('friends-list--slide')[0];
+    const friendListHideIconDOM = document.getElementById('friendListSlideIcon');
+
+    // Show or hide friendslist
+    friendsListHideDOM.addEventListener('click', e => {
+        const source = e.target.closest('.friends-list');
+        
+        if (source.classList.contains('hidden')) {
+            friendListHideIconDOM.src = 'assets/img/hide.svg';
+            source.classList.remove('hidden');
+        } else {
+            friendListHideIconDOM.src = 'assets/img/show.svg';
+            source.classList.add('hidden');
+        }
+
+    });
 
     // Get friends on load
     getFriendsList(friendsListDOM);

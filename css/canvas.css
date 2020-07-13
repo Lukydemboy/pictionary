@@ -157,9 +157,6 @@
 
     border-radius: 5px;
 
-    /* -webkit-box-shadow: 2px 4px 23px 9px rgba(0,0,0,0.1);
-    -moz-box-shadow: 2px 4px 23px 9px rgba(0,0,0,0.1);
-    box-shadow: 2px 4px 23px 9px rgba(0,0,0,0.1) */
 }
 
 .canvas__controls #clear .clear--icon {

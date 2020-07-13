@@ -56,6 +56,11 @@ if (!isset($_SESSION['username'])) {
 
     <!-- FRIENDS LIST -->
     <div id="friendsList" class="friends-list">
+        <div class="friends-list--slide">
+            <div class="icon__wrapper">
+                <img id="friendListSlideIcon" class="icon__wrapper--icon" src="assets/img/hide.svg" alt="Hide">
+            </div>
+        </div>
         <div class="friends-list-header">
             <h2 class="friend-list-title">Friends List</h2>
         </div>
