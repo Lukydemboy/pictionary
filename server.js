@@ -102,6 +102,7 @@ io.on("connection", function(socket) {
 
   });
 
+  // Get rooms (room list)
   socket.on('get rooms', () => {
     // We need to make an array of the object with objects bc socket.io does not pass the object
     const roomsArray = Object.keys(roomObjects).map(key => {
@@ -111,6 +112,7 @@ io.on("connection", function(socket) {
     socket.emit('get rooms', roomsArray);
   });
 
+  // Join room
   socket.on('join room', (room, user) => {
     console.log(`${user.username} joining ${room}...`);
 
@@ -458,6 +460,10 @@ io.on("connection", function(socket) {
 
   });
 
+  socket.on('invite sent', (username) => {
+    io.emit('notification received', username);
+  });
+
 });
 
 function nextPlayer(room) {
@@ -512,6 +518,8 @@ function nextRound(room) {
   }
 
 }
+
+
 
 http.listen(port, function() {
   console.log("listening on *:" + port);

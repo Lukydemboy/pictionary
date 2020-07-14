@@ -68,6 +68,14 @@ document.addEventListener('DOMContentLoaded', e => {
                     currNotification.addEventListener('mouseover', seeNotification);
                 }
 
+                // Add eventListeners to Notification Request buttons
+                const notificationReqBtnsAll = document.getElementsByClassName('notification-response-btn');
+
+                for (let i = 0; i < notificationReqBtnsAll.length; i++) {
+                    const friendReqBtn = notificationReqBtnsAll[i];
+
+                    friendReqBtn.addEventListener('click', handleNotificationRequests);
+                }
 
                 // Add eventListeners to Friend Request buttons
                 const friendReqBtnsAll = document.getElementsByClassName('friend-response-btn');
@@ -120,6 +128,14 @@ document.addEventListener('DOMContentLoaded', e => {
         }
     });
 
+    socket.on('notification received', username => {
+        console.log('invite');
+        if (user.username === username) {
+            getNotifications();
+            notificate('info', 'You have received a notification!');
+        }
+    });
+
 });
 
 function createNotificationHTML(id, data, state, node) {
@@ -152,14 +168,11 @@ function handleFriendRequests(e) {
 
     xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
-
     xhr.send(body);
 
     xhr.onload = () => {
-        if (xhr.status == 200) { // show the result
+        if (xhr.status == 200) {
             const data = xhr.response;
-
-            console.log(data);
 
             const notificationWrapper = source.closest('.notification-wrapper');
 
@@ -200,3 +213,62 @@ function handleFriendRequests(e) {
     };
 
 }
+
+function handleNotificationRequests(e) {
+    const source = e.target;
+
+    const userID = source.dataset.id;
+    const action = source.dataset.action;
+    const type   = source.dataset.type;
+
+    if (!userID) return;
+
+    const notificationWrapper = source.closest('.notification-wrapper');
+
+    if (!notificationWrapper) return;
+
+    const buttonWrapper = notificationWrapper.getElementsByClassName('button__wrapper')[0];
+    const notificationTitle = notificationWrapper.getElementsByClassName('notification-title')[0];
+
+    buttonWrapper.remove();
+    notificationTitle.remove();
+
+    if (action === "accept") {
+        notificationWrapper.insertAdjacentHTML('beforeend', `<p>Request accepted!</p>`)
+        socket.emit('friend request accepted');
+
+        switch (type) {
+            case 'Invite':
+                const roomName = source.dataset.roomname;
+
+                if (!roomName) return;
+
+                socket.emit('join room', roomName, user);
+
+                break;
+        }
+
+    } else {
+        notificationWrapper.insertAdjacentHTML('beforeend', `<p>Request denied!</p>`)
+    }
+
+    setTimeout(() => {
+        const notificationID = notificationWrapper.dataset.id;
+
+        const xhrDelete = new XMLHttpRequest();
+
+        xhrDelete.open('POST', 'admin/php/deleteNotifications.php', true);
+
+        xhrDelete.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+        xhrDelete.send(`notificationID=${notificationID}`);
+        xhrDelete.onload = () => {
+            if (xhrDelete.status == 200) {
+                notificationWrapper.remove();
+            }
+        }
+
+    }, 1000);
+
+}
+

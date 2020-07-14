@@ -111,7 +111,7 @@ body {
     margin: 10px auto;
 }
 
-.notifications-body .notification-wrapper .friend-response-btn {
+.notifications-body .notification-wrapper .notification-response-btn {
 
     color: white;
     font-size: 14px;
@@ -125,12 +125,19 @@ body {
     cursor: pointer;
 
 }
-
 .notifications-body .notification-wrapper .friend-response-btn.accept-friend-request {
     background-color: #87baab;
 }
 
 .notifications-body .notification-wrapper .friend-response-btn.deny-friend-request {
+    background-color: #b27092;
+}
+
+.notifications-body .notification-wrapper .notification-response-btn.accept-notification-request {
+    background-color: #87baab;
+}
+
+.notifications-body .notification-wrapper .notification-response-btn.deny-notification-request {
     background-color: #b27092;
 }
 

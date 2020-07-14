@@ -67,21 +67,9 @@ socket.on('get rooms', allRooms => {
 
 });
 
-
 // Join room
 socket.on('join room', room => {
-    sessionStorage.setItem('currentRoom', room);
-
-    leaveRoomBtn.dataset.room = room;
-
-    gameBrowse.classList.add('hide');
-    lobbyDOM.classList.remove('hide');
-
-    mainMenuDOM.classList.remove('hide');
-    joinRoomDOM.classList.add('hide');
-
-    hideHostElements();
-
+    joinRoom(room);
 });
 
 socket.on('already joined', () => {
@@ -298,6 +286,22 @@ socket.on('player joined', (changedRoom, joinedUser) => {
 socket.on('room not found', () => {
     notificate('warning', `The room you were trying to join doesn't exist`)
 });
+
+function joinRoom(roomName) {
+
+    sessionStorage.setItem('currentRoom', roomName);
+
+    leaveRoomBtn.dataset.room = roomName;
+
+    gameBrowse.classList.add('hide');
+    lobbyDOM.classList.remove('hide');
+
+    mainMenuDOM.classList.remove('hide');
+    joinRoomDOM.classList.add('hide');
+
+    hideHostElements();
+
+}
 
 function hideHostElements() {
     lobbySettingsBtn.classList.add('hide');

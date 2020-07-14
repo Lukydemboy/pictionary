@@ -4,6 +4,12 @@ document.addEventListener('DOMContentLoaded', e => {
     const friendsListHideDOM = document.getElementsByClassName('friends-list--slide')[0];
     const friendListHideIconDOM = document.getElementById('friendListSlideIcon');
 
+    const friendContextMenuDOM = document.getElementById('friendCtxMenu');
+    const friendCtxMenuItemsAll = document.getElementsByClassName('friend-context-menu__items--item');
+    const friendCtxMenuHeader = document.getElementById('friendCtxMenuHeader');
+    const friendCtxMenuInvite = document.getElementById('friendCtxMenuInvite');
+    const friendCtxMenuDelete = document.getElementById('friendCtxMenuDelete');
+
     // Show or hide friendslist
     friendsListHideDOM.addEventListener('click', e => {
         const source = e.target.closest('.friends-list');
@@ -31,6 +37,49 @@ document.addEventListener('DOMContentLoaded', e => {
 
     socket.on('user has gone offline', () => {
         getFriendsList(friendsListDOM);
+    });
+
+    addContextMenuEventListeners(friendCtxMenuItemsAll);
+
+    // Add eventListener to open ctxMenu
+    document.addEventListener('contextmenu', e => {
+        const friend = e.target.closest('.friend');
+        if (friend) {
+            e.preventDefault();
+
+            // Username
+            friendCtxMenuHeader.innerHTML = friend.dataset.username;
+
+            // Invite
+            friendCtxMenuInvite.dataset.userid = friend.dataset.userid;
+            friendCtxMenuInvite.dataset.username = friend.dataset.username;
+
+            // Delete
+            friendCtxMenuDelete.dataset.userid = friend.dataset.userid;
+            friendCtxMenuDelete.dataset.username = friend.dataset.username;
+
+            // Show first to get the info
+            friendContextMenuDOM.classList.remove('hide');
+
+            const ctxMenuInfo = friendContextMenuDOM.getBoundingClientRect();
+
+            // Handle ctxMenu out of screen
+            const left = ( ((e.pageX + ctxMenuInfo.width) > window.innerWidth) ? (window.innerWidth - ctxMenuInfo.width) : e.pageX);
+            const top = (((e.pageY + ctxMenuInfo.height) > window.innerHeight) ? (window.innerHeight - ctxMenuInfo.hieght) : e.pageY);
+
+            friendContextMenuDOM.style.left = `${left}px`;
+            friendContextMenuDOM.style.top = `${top}px`;
+
+        }
+    }, false);
+
+    // Add eventListener to close ctxMenu
+    window.addEventListener("click", e => {
+        if (!friendContextMenuDOM.classList.contains('hide')) friendContextMenuDOM.classList.add('hide');
+    });
+
+    socket.on('invite sent', (username) => {
+        io.emit('imvite received', username);
     });
 
 });
@@ -149,4 +198,73 @@ function getUnreadMessagesCount(friendID, friendWrapper) {
         }
     };
 
+}
+
+function addContextMenuEventListeners(ctxMenuItems) {
+
+    for (let i = 0; i < ctxMenuItems.length; i++) {
+        const ctxItem = ctxMenuItems[i];
+
+        ctxItem.addEventListener('click', e => {
+            const source = e.target.closest('.friend-context-menu__items--item');
+
+            const action = source.dataset.action;
+
+            const userInfo = {
+                id: source.dataset.userid,
+                username: source.dataset.username
+            }
+
+            contextActions(action, userInfo);
+        });
+
+    }
+
+}
+
+function contextActions(action, userInfo) {
+    switch (action) {
+        case 'invite':
+            if (!socket) return;
+
+            const roomName = user.currentRoom.name;
+
+            if (!roomName) {
+                notificate('warning', 'You have to be in a room to invite someone!');
+                return;
+            }
+
+            const xhr = new XMLHttpRequest();
+
+            xhr.open('POST', 'admin/php/notifications.php');
+
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+            const act = 'add';
+            const type = 'Invite';
+            const senderID = user.userID;
+            const senderUsername = user.username;
+
+            console.log(userInfo);
+
+            const body = `act=${act}&roomName=${roomName}&type=${type}&receivingUserID=${userInfo.id}&senderID=${senderID}&senderUsername=${senderUsername}`;
+
+            xhr.send(body);
+
+            xhr.onload = function () {
+                if (xhr.status == 200) { 
+                    notificate('success', `Invite to ${userInfo.username} is sent.`);
+                } else {
+                    notificate('error', 'Invite could not be sent.');
+                }
+            };
+
+            socket.emit('invite sent', userInfo.username);
+
+            break;
+
+        case 'delete':
+            console.log('delete');
+            break;
+    }
 }

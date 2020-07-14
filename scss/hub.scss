@@ -265,6 +265,52 @@ h2 {
 
 }
 
+// Context menu for friend list
+.friend-context-menu {
+    z-index: 100;
+    position: absolute;
+
+    box-sizing: border-box;
+
+    width: 160px;
+    background-color: white;
+
+    border-radius: 5px;
+
+    -webkit-box-shadow: 2px 4px 23px 9px rgba(0,0,0,0.1);
+    -moz-box-shadow: 2px 4px 23px 9px rgba(0,0,0,0.1);
+    box-shadow: 2px 4px 23px 9px rgba(0,0,0,0.1);
+
+    padding-bottom: 5px;
+
+    &--header {
+        padding: 5px 0;
+        text-align: center;
+        font-size: 14px;
+        border-bottom: 1px solid $light-color-light;
+    }
+
+    &__items {
+
+        &--item {
+            padding: 5px 0;
+
+            list-style: none;
+
+            text-align: center;
+            font-size: 13px;
+
+            cursor: pointer;
+
+            &:hover {
+                background-color: rgba(0, 0, 0, 0.1);
+            }
+        }
+
+    }
+
+}
+
 .message-bar {
 
     position: absolute;

@@ -76,6 +76,16 @@ if (!isset($_SESSION['username'])) {
         
     </div>
 
+    <!-- Friend Context Menu -->
+    <div id="friendCtxMenu" class="friend-context-menu hide">
+        <div id="friendCtxMenuHeader" class="friend-context-menu--header">
+        </div>
+        <ul class="friend-context-menu__items">
+            <li id="friendCtxMenuInvite" class="friend-context-menu__items--item" data-action="invite">Invite to Room</li>
+            <li id="friendCtxMenuDelete" class="friend-context-menu__items--item" data-action="delete">Delete Friend</li>
+        </ul>
+    </div>
+
     <!-- Hub Container -->
     <div class="container">
         <div id="gameBrowse" class="game-browse">
