@@ -39,6 +39,10 @@ document.addEventListener('DOMContentLoaded', e => {
         getFriendsList(friendsListDOM);
     });
 
+    socket.on('friend deleted', e => {
+        getFriendsList(friendsListDOM);
+    });
+
     addContextMenuEventListeners(friendCtxMenuItemsAll);
 
     // Add eventListener to open ctxMenu
@@ -245,8 +249,6 @@ function contextActions(action, userInfo) {
             const senderID = user.userID;
             const senderUsername = user.username;
 
-            console.log(userInfo);
-
             const body = `act=${act}&roomName=${roomName}&type=${type}&receivingUserID=${userInfo.id}&senderID=${senderID}&senderUsername=${senderUsername}`;
 
             xhr.send(body);
@@ -264,7 +266,33 @@ function contextActions(action, userInfo) {
             break;
 
         case 'delete':
-            console.log('delete');
+            
+            const friendID = userInfo.id;
+            const userid = user.userID;
+
+            const delBody = `act=del&friendid=${friendID}&userid=${userid}`;
+
+            const delXhr = new XMLHttpRequest();
+
+            delXhr.open('POST', 'admin/php/friends.php');
+
+            delXhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+            delXhr.send(delBody);
+
+            delXhr.onload = function () {
+                if (delXhr.status != 200) { 
+                    notificate('error', 'Could not delete your friend, try again later!')
+                } else {
+                    const friendsListDOM = document.getElementById('friendListBody');
+
+                    getFriendsList(friendsListDOM);
+
+                    socket.emit('friend deleted');
+                    
+                }
+            };
+
             break;
     }
 }

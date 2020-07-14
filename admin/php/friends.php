@@ -85,6 +85,19 @@ switch($act) {
 
         break;
 
+    case 'del':
+        $friendID = $_POST['friendid'];
+        $userID = $_POST['userid'];
+
+        $STH = $DBH -> prepare('DELETE FROM Friends WHERE (UserOne = :friendID AND UserTwo = :userID) OR (UserOne = :userID AND UserTwo = :friendID)');
+
+        $STH -> bindParam(':friendID', $friendID);
+        $STH -> bindParam(':userID', $userID);
+
+        $STH -> execute();
+
+        echo 'User is deleted from your friend list';
+
     default:
         return;
 

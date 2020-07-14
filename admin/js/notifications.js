@@ -185,7 +185,10 @@ function handleFriendRequests(e) {
             notificationTitle.remove();
 
             if (data === "accept") {
+                const friendsListDOM = document.getElementById('friendListBody');
+                
                 notificationWrapper.insertAdjacentHTML('beforeend', `<p>Friend request accepted!</p>`)
+                getFriendsList(friendsListDOM);
                 socket.emit('friend request accepted');
             } else {
                 notificationWrapper.insertAdjacentHTML('beforeend', `<p>Friend request denied!</p>`)
