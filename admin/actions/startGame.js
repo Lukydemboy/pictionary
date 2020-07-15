@@ -12,7 +12,6 @@ startGameBtn.addEventListener('click', e => {
 
 // Game is ready to start
 socket.on('game starting', startingRoom => {
-    console.log(startingRoom);
 
     // Show game and hide lobby
     lobbyDOM.classList.add('hide');
@@ -30,7 +29,7 @@ socket.on('game starting', startingRoom => {
 
     // only show word selection to drawingUser else show player X is picking a word
     if (user.username == user.playingRoom.drawingUser) {
-        // TODO:: get words from server and add to DOM (only change words en dataset! to keep eventlistener)
+        fetchWords(choosingWordDOM);
 
         choosingWordDOM.classList.remove('hide');
 

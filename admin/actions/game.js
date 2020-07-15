@@ -50,8 +50,6 @@ socket.on('word found', (sendingUser, totalScore, thisRoundScore, word) => {
 });
 
 socket.on('next player', nextRoom => {
-    console.log('Next player is chosen and started Drawing!');
-    console.log(nextRoom.drawingUser);
 
     clearBtnDOM.click();
 
@@ -63,6 +61,7 @@ socket.on('next player', nextRoom => {
     // only show word selection to drawingUser else show player X is picking a word
     if (user.username == user.playingRoom.drawingUser) {
         // TODO:: get words from server and add to DOM (only change words en dataset! to keep eventlistener)
+        fetchWords(choosingWordDOM);
 
         choosingWordDOM.classList.remove('hide');
 
@@ -193,9 +192,6 @@ function drawingEnd(room) {
 
     scoreOverlayDOM.classList.remove('hide');
 
-    console.log('Updated drawQueue');
-    console.log(room.drawQueue);
-
     // Wait 5 seconds to show new words
     setTimeout(() => {
 
@@ -314,5 +310,35 @@ function makeEndScoreboard(room) {
     });
 
     gameEndWrapper.classList.remove('hide');
+
+}
+
+function fetchWords(wordsWrapper) {
+
+    const xhr = new XMLHttpRequest();
+
+    const body = `act=get`;
+
+    xhr.open('POST', 'admin/php/words.php');
+
+    xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+    xhr.send(body);
+
+    xhr.onload = function () {
+        if (xhr.status == 200) {
+            const words = JSON.parse(xhr.response);
+            const wordsAllDOM = choosingWordDOM.getElementsByClassName('word');
+
+            for (let i = 0; i < wordsAllDOM.length; i++) {
+                const word = wordsAllDOM[i];
+
+                word.innerHTML = words[i];
+                word.dataset.word = words[i];
+
+            }
+
+        }
+    };
 
 }

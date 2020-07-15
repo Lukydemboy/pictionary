@@ -129,7 +129,6 @@ document.addEventListener('DOMContentLoaded', e => {
     });
 
     socket.on('notification received', username => {
-        console.log('invite');
         if (user.username === username) {
             getNotifications();
             notificate('info', 'You have received a notification!');
