@@ -333,8 +333,11 @@ function fetchWords(wordsWrapper) {
             for (let i = 0; i < wordsAllDOM.length; i++) {
                 const word = wordsAllDOM[i];
 
-                word.innerHTML = words[i];
-                word.dataset.word = words[i];
+                word.innerHTML = words[i]['word'];
+                word.dataset.word = words[i]['word'];
+
+                word.classList = 'word';
+                word.classList.add(words[i]['difficulty']);
 
             }
 

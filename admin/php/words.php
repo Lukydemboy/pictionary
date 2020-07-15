@@ -19,7 +19,12 @@ switch ($_POST['act']) {
 
         $words = [];
         while ($row = $STH -> fetch()) {
-            $words[] = $row -> Word;
+            $word = [];
+
+            $word['word'] = $row -> Word;
+            $word['difficulty'] = $row -> WordDifficulty;
+
+            $words[] = $word;
         }
 
         // print_r($words);
