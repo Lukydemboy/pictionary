@@ -149,8 +149,6 @@ function drawingEnd(room) {
     room.drawQueue.splice(drawingUserIndex, 1);
 
     room.drawingUser = '';
-
-    console.log(room);
     
     makeScoreboard(room.players, scoreboardDOM);
 

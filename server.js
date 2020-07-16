@@ -432,7 +432,7 @@ io.on("connection", function(socket) {
 
   socket.on('friend deleted', () => {
     // TODO find better way to send this
-    io.emit('friend deleted')
+    io.emit('friend deleted');
   });
 
   socket.on('invite sent', (username) => {
