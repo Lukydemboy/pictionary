@@ -50,7 +50,8 @@ socket.on('word found', (sendingUser, totalScore, thisRoundScore, word) => {
 });
 
 socket.on('next player', nextRoom => {
-
+    
+    // Clear the canvas
     clearBtnDOM.click();
 
     // Set current in HTML
@@ -58,9 +59,8 @@ socket.on('next player', nextRoom => {
 
     user.playingRoom = nextRoom;
 
-    // only show word selection to drawingUser else show player X is picking a word
+    // only show word selection to drawingUser else show 'player X is picking a word'
     if (user.username == user.playingRoom.drawingUser) {
-        // TODO:: get words from server and add to DOM (only change words en dataset! to keep eventlistener)
         fetchWords(choosingWordDOM);
 
         choosingWordDOM.classList.remove('hide');
@@ -122,7 +122,7 @@ socket.on('drawing end', room => {
 });
 
 socket.on('game ending', endingRoom => {
-    makeEndScoreboard(endingRoom);
+    makeEndScoreboard(endingRoom.players);
 
     setTimeout(() => { 
         gameEndWrapper.innerHTML = '';
@@ -151,46 +151,10 @@ function drawingEnd(room) {
     room.drawingUser = '';
 
     console.log(room);
+    
+    makeScoreboard(room.players, scoreboardDOM);
 
-    scoreboardDOM.innerHTML = '';
-
-    // Make scoreboard
-    for (let i = 0; i < room.players.length; i++) {
-        const currentPlayer = room.players[i];
-
-        // add players to scoreboard
-        const scoreboardPlayerWrapper = document.createElement('div');
-        scoreboardPlayerWrapper.classList.add('score-player');
-
-        const scoreboardAvatar = document.createElement('div');
-        scoreboardAvatar.classList.add('avatar');
-        scoreboardAvatar.innerHTMl = 'Avatar';
-
-        const scoreboardName = document.createElement('div');
-        scoreboardName.classList.add('name');
-        scoreboardName.innerHTML = currentPlayer.username;
-
-        const scoreboardScore = document.createElement('div');
-        scoreboardScore.classList.add('score');
-        if (!currentPlayer.score) currentPlayer.score = 0;
-        scoreboardScore.innerHTML = currentPlayer.score;
-
-        const scoreboardScoreChange = document.createElement('div');
-        scoreboardScoreChange.classList.add('score-change');
-        if (!currentPlayer.scoreChange) currentPlayer.scoreChange = 0;
-        scoreboardScoreChange.innerHTML = `+${currentPlayer.scoreChange}`;
-        currentPlayer.scoreChange = 0;
-
-        scoreboardScore.appendChild(scoreboardScoreChange);
-
-        scoreboardPlayerWrapper.appendChild(scoreboardAvatar);
-        scoreboardPlayerWrapper.appendChild(scoreboardName);
-        scoreboardPlayerWrapper.appendChild(scoreboardScore);
-
-        scoreboardDOM.appendChild(scoreboardPlayerWrapper);
-    }
-
-    scoreOverlayDOM.classList.remove('hide');
+    showScoreboard(scoreOverlayDOM);
 
     // Wait 5 seconds to show new words
     setTimeout(() => {
@@ -210,6 +174,7 @@ function drawingEnd(room) {
                 socket.emit('start next player', room);
             }
         }
+        
     }, 5000);
 
 }
@@ -246,8 +211,13 @@ function backToLobby() {
     lobbyDOM.classList.remove('hide');
 }
 
-function makeEndScoreboard(room) {
-    const players = room.players;
+function showScoreboard(scoreBoardNode) {
+    scoreBoardNode.classList.remove('hide');
+}
+
+function makeScoreboard(players, node) {
+    scoreboardDOM.innerHTML = '';
+
     const orderedPlayers = [];
 
     for (let i = 0; i < players.length; i++) {
@@ -256,6 +226,7 @@ function makeEndScoreboard(room) {
 
         if (!currentPlayer) return;
 
+        // Loop over players to check if score is higher, if is higher add to that position
         for (let x = 0; x < orderedPlayers.length; x++) {
             const orderedPlayer = orderedPlayers[x];
 
@@ -266,6 +237,71 @@ function makeEndScoreboard(room) {
             }
         }
 
+        // If not inserted already -> add to end of array (score is lower than inserted players)
+        if (!inserted) {
+            orderedPlayers.push(currentPlayer);
+        }
+
+    }
+
+    orderedPlayers.forEach(player => {
+
+        // add players to scoreboard
+        const scoreboardPlayerWrapper = document.createElement('div');
+        scoreboardPlayerWrapper.classList.add('score-player');
+
+        const scoreboardAvatar = document.createElement('div');
+        scoreboardAvatar.classList.add('avatar');
+        scoreboardAvatar.innerHTMl = 'Avatar';
+
+        const scoreboardName = document.createElement('div');
+        scoreboardName.classList.add('name');
+        scoreboardName.innerHTML = player.username;
+
+        const scoreboardScore = document.createElement('div');
+        scoreboardScore.classList.add('score');
+        if (!player.score) player.score = 0;
+        scoreboardScore.innerHTML = player.score;
+
+        const scoreboardScoreChange = document.createElement('div');
+        scoreboardScoreChange.classList.add('score-change');
+        if (!player.scoreChange) player.scoreChange = 0;
+        scoreboardScoreChange.innerHTML = `+${player.scoreChange}`;
+        player.scoreChange = 0;
+
+        scoreboardScore.appendChild(scoreboardScoreChange);
+
+        scoreboardPlayerWrapper.appendChild(scoreboardAvatar);
+        scoreboardPlayerWrapper.appendChild(scoreboardName);
+        scoreboardPlayerWrapper.appendChild(scoreboardScore);
+
+        node.appendChild(scoreboardPlayerWrapper);
+
+    });
+
+}
+
+function makeEndScoreboard(players) {
+    const orderedPlayers = [];
+
+    for (let i = 0; i < players.length; i++) {
+        const currentPlayer = players[i];
+        let inserted = false;
+
+        if (!currentPlayer) return;
+
+        // Loop over players to check if score is higher, if is higher add to that position
+        for (let x = 0; x < orderedPlayers.length; x++) {
+            const orderedPlayer = orderedPlayers[x];
+
+            if (orderedPlayer.score < currentPlayer.score) {
+                orderedPlayers.splice(x, 0, currentPlayer);
+                inserted = true;
+                break;
+            }
+        }
+
+        // If not inserted already -> add to end of array (score is lower than inserted players)
         if (!inserted) {
             orderedPlayers.push(currentPlayer);
         }
@@ -312,6 +348,8 @@ function makeEndScoreboard(room) {
     gameEndWrapper.classList.remove('hide');
 
 }
+
+
 
 function fetchWords(wordsWrapper) {
 
