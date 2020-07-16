@@ -439,6 +439,7 @@ if (!isset($_SESSION['username'])) {
             }
 
             window.addEventListener('unload', e => {
+                socket.emit('disconnect', user.socketID);
 
                 // Make URL
                 let baseURL = location.href.split("/")

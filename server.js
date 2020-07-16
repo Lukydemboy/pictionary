@@ -24,8 +24,11 @@ io.on("connection", function(socket) {
   socket.emit('connected');
 
   socket.on('disconnect', () => {
+    console.log(connectedUsers[socket.id]);
+    console.log(playingRoomObjects);
     // leave the room the user is in (on page leave)
     if (connectedUsers[socket.id].currentRoom) {
+
       const room = connectedUsers[socket.id].currentRoom;
       const username = connectedUsers[socket.id].username;
 
@@ -61,6 +64,9 @@ io.on("connection", function(socket) {
         // Delete room from roomObjects (when there are no users in the room)
         delete roomObjects[room];
       }
+
+
+      leavePlayingRoom(room, username);
 
     }
 
@@ -153,6 +159,8 @@ io.on("connection", function(socket) {
       playingRoomObjects[room].playerNames.push(user.username);
 
       socket.emit('joined playingroom', playingRoomObjects[room]);
+
+      // Prob wrong ---> io.in(roomObjects[room].name).emit();
       socket.to(room).emit('someone joined playingroom', playingRoomObjects[room]);
       
     }
@@ -213,44 +221,7 @@ io.on("connection", function(socket) {
 
   // Leave playingRoom
   socket.on('leave playingroom', (room, user) => {
-    if (!playingRoomObjects[room]) return;
-
-    let leavingUser;
-
-    try {
-
-      if (playingRoomObjects[room].players.length >= 2) {
-        for (let i = 0; i < playingRoomObjects[room].players.length; i++) {
-          const player = playingRoomObjects[room].players[i];
-
-          leavingUser = player;
-
-          if (player.username === user.username) {
-            playingRoomObjects[room].players.splice(i, 1);
-            playingRoomObjects[room].playerCount -= 1;
-            playingRoomObjects[room].playerNames.splice(playingRoomObjects[room].playerNames.indexOf(user.username), 1);
-            playingRoomObjects[room].drawQueue.splice(playingRoomObjects[room].playerNames.indexOf(user.username), 1);
-            // delete connectedUsers[socket.id].playingRoom;
-
-            break;
-
-          }
-
-        }
-
-        socket.to(room).emit('someone left playingroom', leavingUser, playingRoomObjects[room]);
-
-      } else {
-        delete playingRoomObjects[room];
-      }
-
-      console.log('emitting playingroom to home...');
-      socket.emit('playingroom to home');
-    } catch (error) {
-      console.log(error);
-      socket.emit('error', 'Could not leave the room');
-    }
-
+    leavePlayingRoom(room, user.username);
   });
 
   // Friend request sent
@@ -432,7 +403,6 @@ io.on("connection", function(socket) {
       socket.emit('error', 'Could not leave the room');
     }
 
-
   });
 
   // Game has ended
@@ -469,6 +439,48 @@ io.on("connection", function(socket) {
     io.emit('notification received', username);
   });
 
+
+  function leavePlayingRoom(room, username) {
+    if (!playingRoomObjects[room]) return;
+
+    let leavingUser;
+
+    try {
+
+      if (playingRoomObjects[room].players.length >= 2) {
+        for (let i = 0; i < playingRoomObjects[room].players.length; i++) {
+          const player = playingRoomObjects[room].players[i];
+
+          leavingUser = player;
+
+          if (player.username === username) {
+            playingRoomObjects[room].players.splice(i, 1);
+            playingRoomObjects[room].playerCount -= 1;
+            playingRoomObjects[room].playerNames.splice(playingRoomObjects[room].playerNames.indexOf(username), 1);
+            playingRoomObjects[room].drawQueue.splice(playingRoomObjects[room].drawQueue.indexOf(username), 1);
+            playingRoomObjects[room].guessingPlayersInThisRound.splice(playingRoomObjects[room].guessingPlayersInThisRound.indexOf(username), 1);
+            // delete connectedUsers[socket.id].playingRoom;
+
+            break;
+
+          }
+
+        }
+
+        socket.to(room).emit('someone left playingroom', leavingUser, playingRoomObjects[room]);
+
+      } else {
+        delete playingRoomObjects[room];
+      }
+
+      socket.emit('playingroom to home');
+    } catch (error) {
+      console.log(error);
+      socket.emit('error', 'Could not leave the room');
+    }
+
+  }
+
 });
 
 function nextPlayer(room) {
@@ -476,7 +488,6 @@ function nextPlayer(room) {
   if (!room.drawQueue) {
     // Make NEW array of players and add to room object
     room.drawQueue = [...room.playerNames];
-
   }
 
   room.guessingPlayersInThisRound = [...room.playerNames];
@@ -503,7 +514,6 @@ function nextPlayer(room) {
   playingRoomObjects[room.name].wordToFind = '';
   playingRoomObjects[room.name].drawingDuration = playingRoomObjects[room.name].drawTime;
 
-
   return room;
 }
 
@@ -523,8 +533,6 @@ function nextRound(room) {
   }
 
 }
-
-
 
 http.listen(port, function() {
   console.log("listening on *:" + port);

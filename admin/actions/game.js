@@ -328,7 +328,7 @@ function fetchWords(wordsWrapper) {
     xhr.onload = function () {
         if (xhr.status == 200) {
             const words = JSON.parse(xhr.response);
-            const wordsAllDOM = choosingWordDOM.getElementsByClassName('word');
+            const wordsAllDOM = wordsWrapper.getElementsByClassName('word');
 
             for (let i = 0; i < wordsAllDOM.length; i++) {
                 const word = wordsAllDOM[i];
