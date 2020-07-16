@@ -13,14 +13,11 @@ const scoreboardDOM = document.getElementById('scoreboard');
 const gameEndScoreboardDOM = document.getElementById('gameEndScoreboard');
 const currentWordDOM = document.getElementById('currentWord');
 
-
 // Canvas
 const clearBtnDOM = document.getElementById('clear');
 
-
 // Choosing words DOM
 const wordsDOM = document.getElementsByClassName('word');
-
 
 socket.on('word found', (sendingUser, totalScore, thisRoundScore, word) => {
     user.playingRoom = sendingUser.playingRoom;
@@ -137,7 +134,6 @@ socket.on('game ending', endingRoom => {
     }, 5000);
 
 });
-
 
 function drawingEnd(room) {
 
@@ -346,8 +342,6 @@ function makeEndScoreboard(players) {
     gameEndWrapper.classList.remove('hide');
 
 }
-
-
 
 function fetchWords(wordsWrapper) {
 

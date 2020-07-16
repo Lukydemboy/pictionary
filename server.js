@@ -24,8 +24,6 @@ io.on("connection", function(socket) {
   socket.emit('connected');
 
   socket.on('disconnect', () => {
-    console.log(connectedUsers[socket.id]);
-    console.log(playingRoomObjects);
     // leave the room the user is in (on page leave)
     if (connectedUsers[socket.id].currentRoom) {
 
@@ -293,6 +291,8 @@ io.on("connection", function(socket) {
   // Word has been chosen
   socket.on('word chosen', (room, word) => {
 
+    if (!playingRoomObjects[room.name]) return;
+
     playingRoomObjects[room.name].wordChosen = true;
     playingRoomObjects[room.name].wordToFind = word;
 
@@ -448,6 +448,7 @@ io.on("connection", function(socket) {
     try {
 
       if (playingRoomObjects[room].players.length >= 2) {
+
         for (let i = 0; i < playingRoomObjects[room].players.length; i++) {
           const player = playingRoomObjects[room].players[i];
 

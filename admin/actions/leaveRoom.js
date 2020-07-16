@@ -47,7 +47,18 @@ socket.on('someone left room', (leavingUser, room) => {
     // Remove leaving user out of playerList
     element.parentNode.removeChild(element);
 
-    notificate('info', `${leavingUser.username} has left the room.`);
+    // When there is only one player left, delete playingRoom and return back to lobby
+    if (room.playerCount <= 1 && user.playingRoom) {
+        socket.emit('leave playingroom', room.name, user);
+        backToLobby();
+        notificate('info', `${leavingUser.username} has left, since you were alone in the game it stopped`);
+
+        if (wordPickingTimeOut) clearTimeout(wordPickingTimeOut);
+
+    } else {
+        if (user.username !== leavingUser.username) notificate('info', `${leavingUser.username} has left the room.`);        
+    }
+
 
 });
 
@@ -88,6 +99,8 @@ function leaveRoom(e) {
 
     socket.on('playingroom to home', () => {
         delete user.playingRoom;
+
+        if (user.currentRoom) return;
 
         gameWrapper.classList.add('hide');
         gameBrowse.classList.remove('hide');
