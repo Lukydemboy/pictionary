@@ -4,8 +4,9 @@ document.addEventListener('DOMContentLoaded', e => {
     const canvas    = document.getElementById('canvas');
     const ctx       = canvas.getContext('2d');
     const clearDOM  = document.getElementById('clear');
-    const widthDOM  = document.getElementById('pencilWidth');
-
+    const widthDOM = document.getElementById('pencilWidth');
+    const historyBtn = document.getElementById('historyDraw');
+    const drawHistory = [];
     
     let pencilColor = '#000000';
 
@@ -51,8 +52,6 @@ document.addEventListener('DOMContentLoaded', e => {
             room: sessionStorage.getItem('currentRoom')
         });
         
-        console.log(`You are drawing something in ${sessionStorage.getItem('currentRoom')}`);
-
     }
 
     function SomeoneDrawsLine(x0, y0, x1, y1, color, brushSize, emit) {
@@ -103,14 +102,35 @@ document.addEventListener('DOMContentLoaded', e => {
         console.log(`externalBounds: ${bounds.x}`);
         console.log(e.clientX - bounds.x);
 
+        const drawData = {
+            e: e,
+            current: current
+        }
+
         drawLine(current.x, current.y, e.clientX - bounds.x || e.touches[0].clientX, e.clientY - bounds.y || e.touches[0].clientY, current.color, current.brushSize, true, bounds);
         current.x = e.clientX - bounds.x || e.touches[0].clientX;
         current.y = e.clientY - bounds.y || e.touches[0].clientY;
+
+        
+
+        drawHistory.push(drawData);
     }
 
     // Clear canvas
     clearDOM.addEventListener('click', e => {
         clearCanvas(ctx, canvas);
+        clearHistory();
+    });
+
+    historyBtn.addEventListener('click', e => {
+        bounds = canvas.getBoundingClientRect();
+        console.log(drawHistory);
+        drawHistory.forEach(el => {
+            console.log('bounds.X:', bounds.x);
+            console.log('current.X:', el.current.x);
+            drawLine(el.current.x, el.current.y, el.e.clientX - bounds.x || el.e.touches[0].clientX, el.e.clientY - bounds.y || el.e.touches[0].clientY,
+                     el.current.color, el.current.brushSize, true, bounds);            
+        });
     });
 
     // Get brushSize
@@ -162,4 +182,8 @@ function throttle(callback, delay) {
             callback.apply(null, arguments);
         }
     };
+}
+
+function clearHistory() {
+    drawHistory = [];
 }
