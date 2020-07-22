@@ -190,6 +190,13 @@
       width: 70px;
       height: 70px;
       cursor: pointer; }
+    .game__wrapper .canvas__controls .undo-icon__wrapper {
+      width: 25px;
+      height: 25px;
+      cursor: pointer; }
+      .game__wrapper .canvas__controls .undo-icon__wrapper .undo-icon {
+        width: 100%;
+        height: 100%; }
     .game__wrapper .canvas__controls .color__wrapper {
       display: flex; }
       .game__wrapper .canvas__controls .color__wrapper .color {

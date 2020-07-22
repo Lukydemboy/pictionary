@@ -329,8 +329,8 @@ if (!isset($_SESSION['username'])) {
                 <div id="clear">
                     <img src="assets/img/clear.svg" alt="Clear" class="clear--icon">
                 </div>
-                <div class="history-draw">
-                    <button id="historyDraw">History</button>
+                <div class="undo-icon__wrapper">
+                    <img src="assets/img/undo.svg" alt="Undo" class="undo-icon" id="undoBtn">
                 </div>
                 <div class="slidecontainer">
                     <input type="range" min="2" max="100" value="10" class="pencil-width-slider" id="pencilWidth">

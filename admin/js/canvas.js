@@ -1,12 +1,18 @@
 document.addEventListener('DOMContentLoaded', e => {
     let bounds;
      
-    const canvas    = document.getElementById('canvas');
-    const ctx       = canvas.getContext('2d');
-    const clearDOM  = document.getElementById('clear');
-    const widthDOM = document.getElementById('pencilWidth');
-    const historyBtn = document.getElementById('historyDraw');
-    const drawHistory = [];
+    const canvas        = document.getElementById('canvas');
+    const ctx           = canvas.getContext('2d');
+    const clearDOM      = document.getElementById('clear');
+    const widthDOM      = document.getElementById('pencilWidth');
+    const historyBtn    = document.getElementById('historyDraw');
+    const undoBtn       = document.getElementById('undoBtn');
+
+    // History
+    let drawHistory = [];
+    let drawHistoryTemp = [];
+    let drawLineHistory = [];
+    let drawLineCount = 0;
     
     let pencilColor = '#000000';
 
@@ -16,7 +22,7 @@ document.addEventListener('DOMContentLoaded', e => {
 
     resizeCanvas(canvas);
 
-    var current = {
+    let current = {
         color: '#000000',
         brushSize: 10
     };
@@ -54,7 +60,7 @@ document.addEventListener('DOMContentLoaded', e => {
         
     }
 
-    function SomeoneDrawsLine(x0, y0, x1, y1, color, brushSize, emit) {
+    function SomeoneDrawsLine(x0, y0, x1, y1, color, brushSize) {
 
         // Brush Settings
         ctx.strokeStyle = color;
@@ -66,6 +72,24 @@ document.addEventListener('DOMContentLoaded', e => {
         ctx.lineTo(x1, y1);
         ctx.stroke();
         ctx.closePath();
+
+    }
+
+    function undo(drawHistory) {
+        
+        drawHistory.pop();
+
+        bounds = canvas.getBoundingClientRect();
+
+        clearCanvas(ctx, canvas);
+
+        drawHistory.forEach(el => {
+            el.forEach(drawData => {
+                drawLine(drawData.current.x, drawData.current.y, drawData.clientX - bounds.x, drawData.clientY - bounds.y,
+                         drawData.current.color, drawData.current.brushSize, true, bounds);
+            })
+
+        });
 
     }
 
@@ -82,38 +106,57 @@ document.addEventListener('DOMContentLoaded', e => {
         painting = true;
         current.x = e.clientX - bounds.x || e.touches[0].clientX;
         current.y = e.clientY - bounds.y|| e.touches[0].clientY;
-
-
-        console.log(bounds);
     }
 
     function onMouseUp(e) {
         if (!painting) { return; }
         bounds = e.target.getBoundingClientRect();
 
-        painting = false;
         drawLine(current.x, current.y, e.clientX - bounds.x || e.touches[0].clientX, e.clientY - bounds.y || e.touches[0].clientY, current.color, true, bounds);
+
+        const drawData = {
+            e: {
+                ...e
+            },
+            current: {
+                ...current
+            },
+            clientX: e.clientX,
+            clientY: e.clientY
+        }
+
+        drawLineHistory.push(drawData);
+
+        (drawHistory.length > 0 ? drawHistory[drawHistory.length] = drawLineHistory : drawHistory[0] = drawLineHistory);
+
+        drawLineHistory = [];
+
+        painting = false;
+
     }
 
     function onMouseMove(e) {
         if (!painting) { return; }
         bounds = e.target.getBoundingClientRect();
-        console.log(`data.x0: ${e.clientX}`);
-        console.log(`externalBounds: ${bounds.x}`);
-        console.log(e.clientX - bounds.x);
-
-        const drawData = {
-            e: e,
-            current: current
-        }
 
         drawLine(current.x, current.y, e.clientX - bounds.x || e.touches[0].clientX, e.clientY - bounds.y || e.touches[0].clientY, current.color, current.brushSize, true, bounds);
+
+        const drawData = {
+            e: {
+                ...e
+            },
+            current: {
+                ...current
+            },
+            clientX: e.clientX,
+            clientY: e.clientY
+        }
+
         current.x = e.clientX - bounds.x || e.touches[0].clientX;
         current.y = e.clientY - bounds.y || e.touches[0].clientY;
 
-        
-
-        drawHistory.push(drawData);
+        drawLineHistory.push(drawData);
+        drawLineCount += 1;
     }
 
     // Clear canvas
@@ -122,20 +165,23 @@ document.addEventListener('DOMContentLoaded', e => {
         clearHistory();
     });
 
-    historyBtn.addEventListener('click', e => {
-        bounds = canvas.getBoundingClientRect();
-        console.log(drawHistory);
-        drawHistory.forEach(el => {
-            console.log('bounds.X:', bounds.x);
-            console.log('current.X:', el.current.x);
-            drawLine(el.current.x, el.current.y, el.e.clientX - bounds.x || el.e.touches[0].clientX, el.e.clientY - bounds.y || el.e.touches[0].clientY,
-                     el.current.color, el.current.brushSize, true, bounds);            
-        });
-    });
+    // historyBtn.addEventListener('click', () => {
+    //     bounds = canvas.getBoundingClientRect();
+
+    //     drawHistory.forEach(el => {
+    //         drawLine(el.current.x, el.current.y, el.clientX - bounds.x, el.clientY - bounds.y,
+    //                  el.current.color, el.current.brushSize, true, bounds);
+            
+    //     });
+    // });
 
     // Get brushSize
     widthDOM.addEventListener('change', e => {
         current.brushSize = widthDOM.value;
+    });
+
+    undoBtn.addEventListener('click', e => {
+        undo(drawHistory);
     });
 
     for (let i = 0; i < colorPickers.length; i++) {
