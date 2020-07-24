@@ -1,19 +1,18 @@
+// History
+let drawHistory = [];
+// let drawHistoryTemp = [];
+let drawLineHistory = [];
+
 document.addEventListener('DOMContentLoaded', e => {
-    let bounds;
      
     const canvas        = document.getElementById('canvas');
     const ctx           = canvas.getContext('2d');
     const clearDOM      = document.getElementById('clear');
     const widthDOM      = document.getElementById('pencilWidth');
-    const historyBtn    = document.getElementById('historyDraw');
     const undoBtn       = document.getElementById('undoBtn');
 
-    // History
-    let drawHistory = [];
-    let drawHistoryTemp = [];
-    let drawLineHistory = [];
-    let drawLineCount = 0;
-    
+    let bounds = canvas.getBoundingClientRect();
+
     let pencilColor = '#000000';
 
     const colorPickers = document.getElementsByClassName('color');
@@ -32,7 +31,7 @@ document.addEventListener('DOMContentLoaded', e => {
 
     function drawLine(x0, y0, x1, y1, color, brushSize, emit, bounds) {
 
-        if (user.playingRoom.drawingUser != user.username) return;
+        if (user.playingRoom.drawingUser != user.username || !bounds) return;
 
         // Brush Settings
         ctx.strokeStyle = color;
@@ -40,18 +39,18 @@ document.addEventListener('DOMContentLoaded', e => {
         ctx.lineCap = 'round';
 
         ctx.beginPath();
-        ctx.moveTo(x0, y0);
-        ctx.lineTo(x1, y1);
+        ctx.moveTo(x0 - bounds.x, y0 - bounds.y);
+        ctx.lineTo(x1 - bounds.x, y1 - bounds.y);
         ctx.stroke();
         ctx.closePath();
 
         if (!emit) { return; }
 
         socket.emit('draw', {
-            x0: bounds ? x0 + bounds.x : x0,
-            y0: bounds ? y0 + bounds.y : y0,
-            x1: bounds ? x1 + bounds.x : x1,
-            y1: bounds ? y1 + bounds.y : y1,
+            x0: x0,
+            y0: y0,
+            x1: x1,
+            y1: y1,
             color: color,
             brushSize: brushSize,
             bounds: bounds,
@@ -60,7 +59,20 @@ document.addEventListener('DOMContentLoaded', e => {
         
     }
 
-    function SomeoneDrawsLine(x0, y0, x1, y1, color, brushSize) {
+    function autoDrawLine(x0, y0, x1, y1, color, brushSize, bounds) {
+        // Brush Settings
+        ctx.strokeStyle = color;
+        ctx.lineWidth = brushSize;
+        ctx.lineCap = 'round';
+
+        ctx.beginPath();
+        ctx.moveTo(x0 - bounds.x, y0 - bounds.y);
+        ctx.lineTo(x1 - bounds.x, y1 - bounds.y);
+        ctx.stroke();
+        ctx.closePath();
+    }
+
+    function SomeoneDrawsLine(x0, y0, x1, y1, color, brushSize, bounds) {
 
         // Brush Settings
         ctx.strokeStyle = color;
@@ -68,8 +80,8 @@ document.addEventListener('DOMContentLoaded', e => {
         ctx.lineCap     = 'round';
 
         ctx.beginPath();
-        ctx.moveTo(x0, y0);
-        ctx.lineTo(x1, y1);
+        ctx.moveTo(x0 - bounds.x , y0 - bounds.y);
+        ctx.lineTo(x1 - bounds.x , y1 - bounds.y);
         ctx.stroke();
         ctx.closePath();
 
@@ -79,15 +91,14 @@ document.addEventListener('DOMContentLoaded', e => {
         
         drawHistory.pop();
 
-        bounds = canvas.getBoundingClientRect();
-
         clearCanvas(ctx, canvas);
 
         drawHistory.forEach(el => {
+
             el.forEach(drawData => {
-                drawLine(drawData.current.x, drawData.current.y, drawData.clientX - bounds.x, drawData.clientY - bounds.y,
+                drawLine(drawData.current.x, drawData.current.y, drawData.clientX, drawData.clientY,
                          drawData.current.color, drawData.current.brushSize, true, bounds);
-            })
+            });
 
         });
 
@@ -101,18 +112,17 @@ document.addEventListener('DOMContentLoaded', e => {
 
     // Mouse events
     function onMouseDown(e) {
-        bounds = e.target.getBoundingClientRect();
-
         painting = true;
-        current.x = e.clientX - bounds.x || e.touches[0].clientX;
-        current.y = e.clientY - bounds.y|| e.touches[0].clientY;
+        current.x = e.clientX || e.touches[0].clientX;
+        current.y = e.clientY || e.touches[0].clientY;
     }
 
     function onMouseUp(e) {
         if (!painting) { return; }
-        bounds = e.target.getBoundingClientRect();
 
-        drawLine(current.x, current.y, e.clientX - bounds.x || e.touches[0].clientX, e.clientY - bounds.y || e.touches[0].clientY, current.color, true, bounds);
+        updateBounds();
+
+        drawLine(current.x, current.y, e.clientX || e.touches[0].clientX, e.clientY || e.touches[0].clientY, current.color, true, bounds);
 
         const drawData = {
             e: {
@@ -137,9 +147,10 @@ document.addEventListener('DOMContentLoaded', e => {
 
     function onMouseMove(e) {
         if (!painting) { return; }
-        bounds = e.target.getBoundingClientRect();
 
-        drawLine(current.x, current.y, e.clientX - bounds.x || e.touches[0].clientX, e.clientY - bounds.y || e.touches[0].clientY, current.color, current.brushSize, true, bounds);
+        updateBounds();
+
+        drawLine(current.x, current.y, e.clientX || e.touches[0].clientX, e.clientY || e.touches[0].clientY, current.color, current.brushSize, true, bounds);
 
         const drawData = {
             e: {
@@ -152,11 +163,10 @@ document.addEventListener('DOMContentLoaded', e => {
             clientY: e.clientY
         }
 
-        current.x = e.clientX - bounds.x || e.touches[0].clientX;
-        current.y = e.clientY - bounds.y || e.touches[0].clientY;
+        current.x = e.clientX || e.touches[0].clientX;
+        current.y = e.clientY || e.touches[0].clientY;
 
         drawLineHistory.push(drawData);
-        drawLineCount += 1;
     }
 
     // Clear canvas
@@ -164,16 +174,6 @@ document.addEventListener('DOMContentLoaded', e => {
         clearCanvas(ctx, canvas);
         clearHistory();
     });
-
-    // historyBtn.addEventListener('click', () => {
-    //     bounds = canvas.getBoundingClientRect();
-
-    //     drawHistory.forEach(el => {
-    //         drawLine(el.current.x, el.current.y, el.clientX - bounds.x, el.clientY - bounds.y,
-    //                  el.current.color, el.current.brushSize, true, bounds);
-            
-    //     });
-    // });
 
     // Get brushSize
     widthDOM.addEventListener('change', e => {
@@ -201,7 +201,37 @@ document.addEventListener('DOMContentLoaded', e => {
     });
 
     function onDrawingEvent(data) {
-        if (data.bounds) SomeoneDrawsLine(data.x0 - data.bounds.x, data.y0 - data.bounds.y, data.x1 - data.bounds.x, data.y1 - data.bounds.y, data.color, data.brushSize, data.bounds);
+        updateBounds();
+        if (data) SomeoneDrawsLine(data.x0, data.y0, data.x1, data.y1, data.color, data.brushSize, bounds);
+    }
+
+    socket.on('drawing received', drawData => {
+        drawHistoryDrawing(drawData)
+    });
+
+    function drawHistoryDrawing(drawData) {
+        updateBounds();
+        painting = true;
+
+        console.log(drawData);
+
+        drawData.forEach(actionArray => {
+
+            actionArray.forEach(el => {
+                autoDrawLine(el.current.x, el.current.y, el.clientX, el.clientY, el.current.color, el.current.brushSize, bounds);
+            });
+
+        });
+
+        painting = false;
+
+    }
+
+    window.addEventListener('resize', updateBounds);
+
+
+    function updateBounds() {
+        bounds = canvas.getBoundingClientRect();
     }
 
 })
@@ -233,3 +263,4 @@ function throttle(callback, delay) {
 function clearHistory() {
     drawHistory = [];
 }
+

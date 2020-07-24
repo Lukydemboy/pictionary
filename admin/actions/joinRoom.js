@@ -87,9 +87,8 @@ socket.on('joined room', joinedRoom => {
     copyURLDOM.dataset.url = `${inviteURL}?action=joinRoom&room=${joinedRoom.name}`;
 
     user.joinedRoom = true;
-    // Set user room to joinedRoom object
     user.currentRoom = joinedRoom;
-    // hide settings in the lobby
+
     lobbySettingsDOM.classList.add('hide');
 });
 
@@ -97,7 +96,6 @@ socket.on('joined room', joinedRoom => {
 socket.on('joined playingroom', joinedRoom => {
     user.playingRoom = joinedRoom;
 
-    console.log('Joining playingroom...');
     gameBrowse.classList.add('hide');
     gameWrapper.classList.remove('hide');
 
@@ -108,14 +106,23 @@ socket.on('joined playingroom', joinedRoom => {
 
     // hide settings in the lobby
     lobbySettingsDOM.classList.add('hide');
+
+    makeInfoBar(joinedRoom);
+
+    // Update playerList
+    createPlayerList();
 });
 
 // Someone else joined the playingRoom (the room has to be updated)
-socket.on('someone joined playingroom', room => {
+socket.on('someone joined playingroom', (room, username)=> {
+
     user.playingRoom = room;
 
     // Update playerList
     createPlayerList();
+
+    // Send drawing to joined player
+    if (user.playingRoom.drawingUser === user.username) socket.emit('send drawing', drawHistory, username);
 
 });
 

@@ -159,7 +159,7 @@ io.on("connection", function(socket) {
       socket.emit('joined playingroom', playingRoomObjects[room]);
 
       // Prob wrong ---> io.in(roomObjects[room].name).emit();
-      socket.to(room).emit('someone joined playingroom', playingRoomObjects[room]);
+      socket.to(room).emit('someone joined playingroom', playingRoomObjects[room], user.username);
       
     }
 
@@ -229,13 +229,28 @@ io.on("connection", function(socket) {
 
   // Friend request accepted
   socket.on('friend request accepted', () => {
-    console.log('Friend request is accepted');
     socket.broadcast.emit('friend request accepted');
   });
 
   // Someone is drawing on the canvas
   socket.on('draw', (data) => {
     socket.to(data.room).emit('draw', data);
+  });
+
+  // Drawing has been sent
+  socket.on('send drawing', (drawHistory, username) => {
+    const keys = Object.values(connectedUsers);
+
+    for (const user in keys) {
+
+      const entry = keys[user];
+
+      if (entry.username === username) {
+        io.to(entry.socketId).emit('drawing received', drawHistory);
+        return;
+      }
+
+    }
   });
 
   socket.on('clear', room => {
@@ -438,7 +453,6 @@ io.on("connection", function(socket) {
   socket.on('invite sent', (username) => {
     io.emit('notification received', username);
   });
-
 
   function leavePlayingRoom(room, username) {
     if (!playingRoomObjects[room]) return;
